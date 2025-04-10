@@ -1,0 +1,21 @@
+{
+    "name": "lechuganegra/accessmanager",
+    "description": "Paquete para gestión de roles, permisos y accesos",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "LechugaNegra\\AccessManager\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "laravel/framework": "^11.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LechugaNegra\\AccessManager\\Providers\\AccessManagerProvider"
+            ]
+        }
+    }
+}
