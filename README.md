@@ -5,15 +5,29 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 ## Características Principales
 
 * **Gestión de Roles:** Define roles con distintos niveles de acceso, permitiendo una administración granular de privilegios.
-* **Gestión de Módulos:** Organiza los permisos en módulos lógicos, facilitando la administración y comprensión de los mismos.
-* **Gestión de Permisos:** Asigna permisos específicos a roles, controlando las acciones que cada rol puede realizar.
-* **Gestión de Rutas:** Asocia permisos a rutas concretas, protegiendo el acceso a funcionalidades específicas de la aplicación.
+* **Banco de Módulos:** Organiza los permisos en módulos lógicos, facilitando la administración y comprensión de los mismos.
+* **Banco de Permisos:** Asigna permisos específicos a roles, controlando las acciones que cada rol puede realizar.
+* **Banco de Rutas:** Asocia permisos a rutas concretas, protegiendo el acceso a funcionalidades específicas de la aplicación.
 * **Middleware de Validación:** Valida los permisos de las rutas mediante un middleware, asegurando que solo los usuarios autorizados puedan acceder a ellas.
 * **Personalización del Modelo de Usuario:** Permite utilizar un modelo de usuario personalizado, adaptándose a las necesidades de cada proyecto.
 
 ## Instalación
 
-1.  **Requerir el paquete vía Composer:**
+1.  **Crear grupo de paquetes:**
+
+    Crear la carpeta packages en la raíz del proyecto:
+
+    ```bash
+    mkdir packages
+    ```
+
+    Crear el grupo de carpetas dentro de la carpeta creada:
+    
+    ```bash
+    mkdir lechuganegra
+    ```
+
+2.  **Requerir el paquete vía Composer:**
 
     Abre tu terminal y ejecuta el siguiente comando para agregar el paquete a las dependencias de tu proyecto:
 
@@ -23,7 +37,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     Este comando descargará el paquete y actualizará tu archivo `composer.json`.
 
-2.  **Configurar el autoloading:**
+3.  **Configurar el autoloading:**
 
     Edita tu archivo `composer.json` y añade el namespace del paquete al autoloading de PSR-4:
 
@@ -46,7 +60,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     Este paso asegura que Laravel pueda encontrar las clases del paquete.
 
-3.  **Configurar el modelo de usuario (opcional):**
+4.  **Configurar el modelo de usuario (opcional):**
 
     Si deseas utilizar un modelo de usuario personalizado, publica el archivo de configuración del paquete:
 
@@ -63,7 +77,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     ],
     ```
 
-4.  **Ejecutar las migraciones:**
+5.  **Ejecutar las migraciones:**
 
     Ejecuta las migraciones del paquete para crear las tablas necesarias en la base de datos:
 
@@ -73,7 +87,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     **Nota:** Esta migración agrega un campo `admin` a la tabla de usuarios. Se recomienda no incluir este campo en el atributo `fillable` del modelo para evitar modificaciones accidentales.
 
-5.  **Ejecutar el seeder:**
+6.  **Ejecutar el seeder:**
 
     Ejecuta el seeder del paquete para poblar las tablas con datos iniciales:
 
@@ -81,7 +95,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     php artisan db:seed --class="LechugaNegra\\AccessManager\\Database\\Seeders\\DatabaseSeeder"
     ```
 
-6.  **Limpiar la caché:**
+7.  **Limpiar la caché:**
 
     Limpia la caché de configuración y rutas para asegurar que los cambios se apliquen correctamente:
 
