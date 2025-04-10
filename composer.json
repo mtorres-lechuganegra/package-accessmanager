@@ -2,6 +2,12 @@
     "name": "lechuganegra/accessmanager",
     "description": "Paquete para gestión de roles, permisos y accesos",
     "type": "library",
+    "authors": [
+        {
+            "name": "Marco Torres",
+            "email": "marquillo01@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "LechugaNegra\\AccessManager\\": "src/"
@@ -17,5 +23,6 @@
                 "LechugaNegra\\AccessManager\\Providers\\AccessManagerProvider"
             ]
         }
-    }
+    },
+    "version": "1.0.0"
 }
