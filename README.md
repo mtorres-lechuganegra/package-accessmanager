@@ -29,7 +29,15 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     cd packages
     ```
 
-2.  **Requerir el paquete vía Composer:**
+2.  **Clonar el paquete:**
+
+    Clonar el paquete en el grupo de carpetas creado y renombrarlo para que el Provider pueda registrarlo en la instalación
+
+    ```bash
+    git clone https://github.com/mtorres-lechuganegra/package-accessmanager.git accessmanager
+    ```
+
+3.  **Requerir el paquete vía Composer:**
 
     Abre tu terminal y ejecuta el siguiente comando para agregar el paquete a las dependencias de tu proyecto:
 
@@ -39,7 +47,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     Este comando descargará el paquete y actualizará tu archivo `composer.json`.
 
-3.  **Configurar el autoloading:**
+4.  **Configurar el autoloading:**
 
     Edita tu archivo `composer.json` y añade el namespace del paquete al autoloading de PSR-4:
 
@@ -62,7 +70,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     Este paso asegura que Laravel pueda encontrar las clases del paquete.
 
-4.  **Configurar el modelo de usuario (opcional):**
+5.  **Configurar el modelo de usuario (opcional):**
 
     Si deseas utilizar un modelo de usuario personalizado, publica el archivo de configuración del paquete:
 
@@ -79,7 +87,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     ],
     ```
 
-5.  **Ejecutar las migraciones:**
+6.  **Ejecutar las migraciones:**
 
     Ejecuta las migraciones del paquete para crear las tablas necesarias en la base de datos:
 
@@ -89,7 +97,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
     **Nota:** Esta migración agrega un campo `admin` a la tabla de usuarios. Se recomienda no incluir este campo en el atributo `fillable` del modelo para evitar modificaciones accidentales.
 
-6.  **Ejecutar el seeder:**
+7.  **Ejecutar el seeder:**
 
     Ejecuta el seeder del paquete para poblar las tablas con datos iniciales:
 
@@ -97,7 +105,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     php artisan db:seed --class="LechugaNegra\\AccessManager\\Database\\Seeders\\DatabaseSeeder"
     ```
 
-7.  **Limpiar la caché:**
+8.  **Limpiar la caché:**
 
     Limpia la caché de configuración y rutas para asegurar que los cambios se apliquen correctamente:
 
