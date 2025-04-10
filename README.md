@@ -26,7 +26,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     
     ```bash
     mkdir lechuganegra
-    cd packages
+    cd lechuganegra
     ```
 
 2.  **Clonar el paquete:**
@@ -114,6 +114,14 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     php artisan config:cache
     php artisan route:clear
     php artisan route:cache
+    ```
+    
+9.  **Regenerar clases:**
+
+    Regenerar las clases con el cargador automático "autoload"
+
+    ```bash
+    composer dump-autoload
     ```
 
 ## Uso
