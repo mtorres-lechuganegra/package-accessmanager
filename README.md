@@ -15,16 +15,18 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
 
 1.  **Crear grupo de paquetes:**
 
-    Crear la carpeta packages en la raíz del proyecto:
+    Crear la carpeta packages en la raíz del proyecto e ingresar a la carpeta:
 
     ```bash
     mkdir packages
+    cd packages
     ```
 
-    Crear el grupo de carpetas dentro de la carpeta creada:
+    Crear el grupo de carpetas dentro de la carpeta creada, e ingresar a l carpeta:
     
     ```bash
     mkdir lechuganegra
+    cd packages
     ```
 
 2.  **Requerir el paquete vía Composer:**
