@@ -15,16 +15,6 @@
 						{
 							"name": "Store",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "POST",
 								"header": [
 									{
@@ -64,16 +54,6 @@
 						{
 							"name": "Update",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "PUT",
 								"header": [
 									{
@@ -114,16 +94,6 @@
 						{
 							"name": "Show",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [
 									{
@@ -155,16 +125,6 @@
 						{
 							"name": "Index",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "GET",
 								"header": [
 									{
@@ -205,16 +165,6 @@
 						{
 							"name": "Destroy",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
 								"method": "DELETE",
 								"header": [
 									{
