@@ -37,38 +37,41 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     git clone https://github.com/mtorres-lechuganegra/package-accessmanager.git accessmanager
     ```
 
-3.  **Requerir el paquete vía Composer:**
+3.  **Configurar composer del proyecto:**
 
-    Abre tu terminal y ejecuta el siguiente comando para agregar el paquete a las dependencias de tu proyecto:
+    Dirígite a la raíz de tu proyecto, edita tu archivo `composer.json` y añade el paquete como repositorio:
 
-    ```bash
-    composer require lechuganegra/accessmanager:@dev
+    ```json
+    {
+        "repositories": [
+            {
+                "type": "path",
+                "url": "packages/lechugaNegra/accessmanager"
+            }
+        ]
+    }
     ```
-
-    Este comando descargará el paquete y actualizará tu archivo `composer.json`.
-
-4.  **Configurar el autoloading:**
-
-    Edita tu archivo `composer.json` y añade el namespace del paquete al autoloading de PSR-4:
+    también deberás añadir el namespace del paquete al autoloading de PSR-4:
 
     ```json
     {
         "autoload": {
             "psr-4": {
-                "App\\": "app/",
                 "LechugaNegra\\AccessManager\\": "packages/lechuganegra/accessmanager/"
             }
         }
     }
     ```
 
-    Luego, ejecuta el siguiente comando para regenerar el autoloading:
+4.  **Ejecutar composer require:**
+
+    Después de editar tu archivo, abre tu terminal y ejecuta el siguiente comando para agregar el paquete a las dependencias de tu proyecto:
 
     ```bash
-    composer dump-autoload
+    composer require lechuganegra/authmanager:@dev
     ```
 
-    Este paso asegura que Laravel pueda encontrar las clases del paquete.
+    Este comando descargará el paquete y actualizará tu archivo `composer.json`.
 
 5.  **Configurar el modelo de usuario (opcional):**
 
