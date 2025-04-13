@@ -57,7 +57,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     {
         "autoload": {
             "psr-4": {
-                "LechugaNegra\\AccessManager\\": "packages/lechuganegra/accessmanager/"
+                "LechugaNegra\\AccessManager\\": "packages/LechugaNegra/AccessManager/src/"
             }
         }
     }
@@ -68,7 +68,7 @@ Este paquete de Laravel 11 proporciona una solución integral para la gestión d
     Después de editar tu archivo, abre tu terminal y ejecuta el siguiente comando para agregar el paquete a las dependencias de tu proyecto:
 
     ```bash
-    composer require lechuganegra/authmanager:@dev
+    composer require lechuganegra/accessmanager:@dev
     ```
 
     Este comando descargará el paquete y actualizará tu archivo `composer.json`.
