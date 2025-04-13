@@ -1,6 +1,6 @@
 # Lechuga Negra - AccessManager para Laravel
 
-Este paquete de Laravel 11 proporciona una solución integral para la gestión de accesos en tus aplicaciones, permitiendo la definición de roles, módulos, permisos y rutas, con una lógica de relaciones muchos a muchos entre roles y permisos. Además, incluye un middleware para la validación de permisos en rutas, asegurando un control de acceso robusto y flexible.
+Este paquete de Laravel proporciona una solución integral para la gestión de accesos en tus aplicaciones, permitiendo la definición de roles, módulos, permisos y rutas, con una lógica de relaciones muchos a muchos entre roles y permisos. Además, incluye un middleware para la validación de permisos en rutas, asegurando un control de acceso robusto y flexible.
 
 ## Características Principales
 
