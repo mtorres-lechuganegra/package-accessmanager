@@ -75,13 +75,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
 5.  **Configurar el modelo de usuario (opcional):**
 
-    Si deseas utilizar un modelo de usuario personalizado, publica el archivo de configuración del paquete:
-
-    ```bash
-    php artisan vendor:publish --provider="LechugaNegra\AccessManager\AccessManagerServiceProvider" --tag="config"
-    ```
-
-    Luego, edita el archivo `config/accessmanager.php` y modifica la entrada `user_entity` con la información de tu modelo:
+    Puedes editar el archivo `config/accessmanager.php` y modifica la entrada `user_entity` con la información de tu modelo:
 
     ```php
     'user_entity' => [
@@ -137,3 +131,4 @@ Para proteger tus rutas con el middleware de validación de permisos, utiliza `c
 Route::middleware(['capability.access'])->group(function () {
     // Rutas protegidas
 });
+```

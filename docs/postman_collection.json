@@ -77,7 +77,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}api/access/capability/roles/1",
+									"raw": "{{url}}api/access/capability/roles/{id}",
 									"host": [
 										"{{url}}api"
 									],
@@ -85,7 +85,7 @@
 										"access",
 										"capability",
 										"roles",
-										"1"
+										"{id}"
 									]
 								}
 							},
@@ -108,7 +108,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}api/access/capability/roles/1",
+									"raw": "{{url}}api/access/capability/roles/{id}",
 									"host": [
 										"{{url}}api"
 									],
@@ -116,7 +116,7 @@
 										"access",
 										"capability",
 										"roles",
-										"1"
+										"{id}"
 									]
 								}
 							},
@@ -179,7 +179,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}api/access/capability/roles/1",
+									"raw": "{{url}}api/access/capability/roles/{id}",
 									"host": [
 										"{{url}}api"
 									],
@@ -187,7 +187,7 @@
 										"access",
 										"capability",
 										"roles",
-										"1"
+										"{id}"
 									]
 								}
 							},
@@ -223,7 +223,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "http://lechuganegra.test/",
+			"value": "http://ln-packages.test/",
 			"type": "string"
 		},
 		{
