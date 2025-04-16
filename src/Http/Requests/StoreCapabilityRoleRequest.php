@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCapabilityRoleRequest extends FormRequest
 {
@@ -14,9 +15,9 @@ class StoreCapabilityRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|string|max:255|unique:capability_roles,code',
-            'name' => 'required|string|max:255',
-            'status' => 'nullable|string|in:active,inactive'
+            'code' => ['required', 'string', 'max:255', Rule::unique('capability_roles', 'code')->whereNull('deleted_at')],
+            'name' => ['required', 'string', 'max:255'],
+            'status' => ['nullable', 'string', 'in:active,inactive']
         ];
     }
 

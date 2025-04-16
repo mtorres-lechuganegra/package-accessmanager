@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCapabilityRoleRequest extends FormRequest
 {
@@ -13,9 +14,11 @@ class UpdateCapabilityRoleRequest extends FormRequest
 
     public function rules()
     {
+        $id = $this->route('id');
+
         return [
-            'name' => 'required|string|max:255',
-            'status' => 'required|string|in:active,inactive',
+            'name' => ['required', 'string', 'max:255', Rule::unique('capability_roles', 'name')->ignore($id)],
+            'status' => ['required', 'string', 'in:active', 'inactive'],
         ];
     }
 

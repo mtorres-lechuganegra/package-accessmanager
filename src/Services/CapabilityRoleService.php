@@ -8,6 +8,23 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CapabilityRoleService
 {
     /**
+     * Listar todos los CapabilityRoles con paginación.
+     */
+    public function list($filters)
+    {
+        $page = $filters['page'] ?? config('admin.pagination.default_page');
+        $size = $filters['size'] ?? config('admin.pagination.default_size');
+        
+        $query = CapabilityRole::query();
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->paginate($size, ['*'], 'page', $page)->toArray();
+    }
+
+    /**
      * Crear un nuevo CapabilityRole.
      */
     public function create(array $data)
@@ -56,7 +73,7 @@ class CapabilityRoleService
     /**
      * Eliminar un CapabilityRole.
      */
-    public function destroy($id)
+    public function delete($id)
     {
         $role = CapabilityRole::find($id);
 
@@ -64,26 +81,8 @@ class CapabilityRoleService
             throw new ModelNotFoundException('Role not found');
         }
 
-        // Eliminar físicamente el rol
         $role->delete();
 
         return true;
-    }
-
-    /**
-     * Listar todos los CapabilityRoles con paginación.
-     */
-    public function index($filters)
-    {
-        $page = $filters['page'] ?? config('admin.pagination.default_page');
-        $size = $filters['size'] ?? config('admin.pagination.default_size');
-        
-        $query = CapabilityRole::query();
-
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
-
-        return $query->paginate($size, ['*'], 'page', $page)->toArray();
     }
 }

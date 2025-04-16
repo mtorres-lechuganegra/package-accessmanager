@@ -20,6 +20,28 @@ class CapabilityRoleController extends Controller
     }
 
     /**
+     * Listar todos los CapabilityRoles con paginación.
+     */
+    public function index(Request $request)
+    {
+        try {
+            $params = [
+                'page'  => (int) $request->input('page', config('accessmanager.default_page')),
+                'size'  => min(
+                    (int) $request->input('size', config('accessmanager.default_size')),
+                    config('accessmanager.max_size')
+                ),
+                'status' => $request->input('status'),
+            ];
+            
+            $roles = $this->capabilityRoleService->list($params);
+            return response()->json($roles, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    /**
      * Almacenar un nuevo CapabilityRole.
      */
     public function store(StoreCapabilityRoleRequest $request)
@@ -73,30 +95,8 @@ class CapabilityRoleController extends Controller
     public function destroy($id)
     {
         try {
-            $this->capabilityRoleService->destroy($id);
+            $this->capabilityRoleService->delete($id);
             return response()->json(['message' => 'Role deleted successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-
-    /**
-     * Listar todos los CapabilityRoles con paginación.
-     */
-    public function index(Request $request)
-    {
-        try {
-            $params = [
-                'page'  => (int) $request->input('page', config('accessmanager.default_page')),
-                'size'  => min(
-                    (int) $request->input('size', config('accessmanager.default_size')),
-                    config('accessmanager.max_size')
-                ),
-                'status' => $request->input('status'),
-            ];
-            
-            $roles = $this->capabilityRoleService->index($params);
-            return response()->json($roles, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }
