@@ -32,8 +32,8 @@ class CapabilityRoleService
         return CapabilityRole::create([
             'name' => $data['name'],
             'code' => $data['code'],
-            'created_by' => $data['created_by'],
             'status' => $data['status'] ?? 'inactive',
+            'created_by' => $data['created_by'],
         ]);
     }
 

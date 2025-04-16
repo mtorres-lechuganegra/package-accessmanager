@@ -47,6 +47,7 @@ class CapabilityRoleController extends Controller
     public function store(StoreCapabilityRoleRequest $request)
     {
         try {
+            // Obtener al usuario logueado
             $user = Auth::guard('api')->user();
             if (!$user) {
                 return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);

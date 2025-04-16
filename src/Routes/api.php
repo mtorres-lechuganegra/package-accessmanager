@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use LechugaNegra\AccessManager\Http\Controllers\CapabilityRoleController;
 
-Route::middleware(['capability.access'])->group(function () {
+Route::middleware(['auth:api', 'capability.access'])->group(function () {
     Route::prefix('api/access')->name('api.access.')->group(function () {
         Route::prefix('capability/roles')->name('capability.roles.')->group(function () {
             Route::get('/', [CapabilityRoleController::class, 'index'])->name('index'); // Listar roles
