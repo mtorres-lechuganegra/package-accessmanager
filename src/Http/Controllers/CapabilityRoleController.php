@@ -86,11 +86,17 @@ class CapabilityRoleController extends Controller
     public function index(Request $request)
     {
         try {
-            $page = $request->get('page', config('accessmanager.default_page'));
-            $size = $request->get('size', config('accessmanager.default_size'));
+            $params = [
+                'page'  => (int) $request->input('page', config('accessmanager.default_page')),
+                'size'  => min(
+                    (int) $request->input('size', config('accessmanager.default_size')),
+                    config('accessmanager.max_size')
+                ),
+                'status' => $request->input('status'),
+            ];
             
-            $roles = $this->capabilityRoleService->index($page, $size);
-            return response()->json($roles);
+            $roles = $this->capabilityRoleService->index($params);
+            return response()->json($roles, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }

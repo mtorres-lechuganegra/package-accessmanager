@@ -11,6 +11,7 @@ return [
     */
     'default_page' => env('ACCESS_MANAGER_DEFAULT_PAGE', 1),
     'default_size' => env('ACCESS_MANAGER_DEFAULT_SIZE', 20),
+    'max_size' => env('ACCESS_MANAGER_MAX_SIZE', 100),
 
     /*
     |--------------------------------------------------------------------------

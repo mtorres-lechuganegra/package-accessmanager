@@ -73,8 +73,17 @@ class CapabilityRoleService
     /**
      * Listar todos los CapabilityRoles con paginación.
      */
-    public function index($page, $size)
+    public function index($filters)
     {
-        return CapabilityRole::paginate($size, ['*'], 'page', $page);
+        $page = $filters['page'] ?? config('admin.pagination.default_page');
+        $size = $filters['size'] ?? config('admin.pagination.default_size');
+        
+        $query = CapabilityRole::query();
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->paginate($size, ['*'], 'page', $page)->toArray();
     }
 }
