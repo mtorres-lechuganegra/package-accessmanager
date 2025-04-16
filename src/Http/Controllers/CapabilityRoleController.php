@@ -74,7 +74,7 @@ class CapabilityRoleController extends Controller
     {
         try {
             $this->capabilityRoleService->destroy($id);
-            return response()->json(['message' => 'Role deleted successfully']);
+            return response()->json(['message' => 'Role deleted successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }
