@@ -38,7 +38,7 @@ class AccessManagerSeeder extends Seeder
     private function createModuleAndPermissions(array $moduleData)
     {
         // Crear el módulo en la base de datos
-        $module = CapabilityModule::create([
+        $module = CapabilityModule::firstOrCreate([
             'code' => $moduleData['name'],
             'name' => $moduleData['name']
         ]);

@@ -4,6 +4,7 @@ namespace LechugaNegra\AccessManager\Services;
 
 use LechugaNegra\AccessManager\Models\CapabilityRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Builder;
 
 class CapabilityRoleService
 {
@@ -17,9 +18,7 @@ class CapabilityRoleService
         
         $query = CapabilityRole::query();
 
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
-        }
+        $this->filters($query, $filters);
 
         return $query->paginate($size, ['*'], 'page', $page)->toArray();
     }
@@ -84,5 +83,27 @@ class CapabilityRoleService
         $role->delete();
 
         return true;
+    }
+
+    public function filters(Builder &$query, array $filters): void
+    {
+        if (!empty($filters['search'])) {
+            $query->where(function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+        if (!empty($filters['code'])) {
+            $query->where('code', '=', $filters['question']);
+        }
+        if (!empty($filters['name'])) {
+            $query->where('keywords', 'like', '%' . $filters['keyword'] . '%');
+        }
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        $orderField = $filters['order_field'] ?? 'updated_at';
+        $orderSort = $filters['order_sort'] ?? 'desc';
+        $query->orderBy($orderField, $orderSort);
     }
 }
