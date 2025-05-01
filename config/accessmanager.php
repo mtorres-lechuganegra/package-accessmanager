@@ -11,6 +11,8 @@ return [
     */
     'default_page' => env('ACCESS_MANAGER_DEFAULT_PAGE', 1),
     'default_size' => env('ACCESS_MANAGER_DEFAULT_SIZE', 20),
+    'default_skip' => env('ACCESS_MANAGER_DEFAULT_SKIP', 0),
+    'default_take' => env('ACCESS_MANAGER_DEFAULT_TAKE', 20),
     'max_size' => env('ACCESS_MANAGER_MAX_SIZE', 100),
 
     /*

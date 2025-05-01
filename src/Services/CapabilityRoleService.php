@@ -13,14 +13,37 @@ class CapabilityRoleService
      */
     public function list($filters)
     {
-        $page = $filters['page'] ?? config('admin.pagination.default_page');
-        $size = $filters['size'] ?? config('admin.pagination.default_size');
+        $page = $filters['page'] ?? config('accessmanager.pagination.default_page');
+        $size = $filters['size'] ?? config('accessmanager.pagination.default_size');
         
         $query = CapabilityRole::query();
 
         $this->filters($query, $filters);
 
         return $query->paginate($size, ['*'], 'page', $page)->toArray();
+    }
+
+    public function all(array $filters): object
+    {
+        $skip = $filters['skip'] ?? config('accessmanager.pagination.default_skip');
+        $take = $filters['take'] ?? config('accessmanager.pagination.default_take');
+
+        $query = CapabilityRole::query();
+
+        $this->filters($query, $filters);
+
+        return $query->skip($skip)->take($take)->get();
+    }
+
+    public function options(array $filters): object
+    {
+        $take = $filters['take'] ?? config('accessmanager.pagination.default_take');
+
+        $query = CapabilityRole::query();
+
+        $this->filters($query, $filters);
+
+        return $query->select(['id', 'name'])->skip(0)->take($take)->get();
     }
 
     /**

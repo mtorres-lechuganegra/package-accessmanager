@@ -32,6 +32,26 @@ class CapabilityRoleController extends Controller
         }
     }
 
+    public function all(Request $request)
+    {
+        try {
+            $registers = $this->capabilityRoleService->all($request->all());
+            return response()->json($registers, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
+    public function options(Request $request)
+    {
+        try {
+            $registers = $this->capabilityRoleService->options($request->all());
+            return response()->json($registers, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
+    }
+
     /**
      * Almacenar un nuevo CapabilityRole.
      */
