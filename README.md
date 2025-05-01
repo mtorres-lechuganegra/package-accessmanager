@@ -132,3 +132,22 @@ Route::middleware(['capability.access'])->group(function () {
     // Rutas protegidas
 });
 ```
+
+### Asignar Roles
+
+Para poder asignar roles a una entidad, es importante generar una relación polimórfica personalizada para relacionar el puente de comunicación entre la entidad (modelo) a capability_roles.
+
+Usar el modelo que funcionará como puente de comunicación en una relación polimórfica de muchos a muchos:
+
+```php
+use Lechuganegra\AccessManager\Models\RelationEntityRole;
+```
+
+Agregar la función de relación através dle puente de conexión:
+
+```php
+public function roles()
+{
+    return $this->morphMany(RelationEntityRole::class, 'entity', 'entity_module', 'entity_id');
+}
+```
