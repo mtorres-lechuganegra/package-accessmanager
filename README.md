@@ -151,3 +151,11 @@ public function roles()
     return $this->morphMany(RelationEntityRole::class, 'entity', 'entity_module', 'entity_id');
 }
 ```
+
+Dirígete al archivo `AppServiceProvider.php`, y en tu boot de arranque, agregar la entidad que deseas vincular a la relación con roles, puedes agregar las entidades que desees, separado por `,`:
+
+```php
+Relation::morphMap([
+    'user' => \App\Models\User::class,
+]);
+```
