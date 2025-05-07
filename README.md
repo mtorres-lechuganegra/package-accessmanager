@@ -57,7 +57,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     {
         "autoload": {
             "psr-4": {
-                "LechugaNegra\\AccessManager\\": "packages/LechugaNegra/AccessManager/src/"
+                "LechugaNegra\\AccessManager\\": "packages/lechugaNegra/accessmanager/src/"
             }
         }
     }
@@ -122,6 +122,10 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     ```
 
 ## Uso
+
+### Endpoints del Servicio
+
+Puede importar el archivo `postman_collection.json` que se ubica en la carpeta `docs` de la raíz del paquete.
 
 ### Middleware de Validación
 
