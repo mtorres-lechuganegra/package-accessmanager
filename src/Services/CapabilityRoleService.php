@@ -5,12 +5,16 @@ namespace LechugaNegra\AccessManager\Services;
 use LechugaNegra\AccessManager\Models\CapabilityRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Lechuganegra\AccessManager\Models\RelationEntityRole;
 
 class CapabilityRoleService
 {
     /**
-     * Listar todos los CapabilityRoles con paginación.
+     * Listar todos los roles con paginación.
+     *
+     * @param array $filters Filtros de búsqueda como 'page', 'size', 'search', etc.
+     * @return array Lista paginada de roles en formato array.
      */
     public function list($filters)
     {
@@ -24,6 +28,12 @@ class CapabilityRoleService
         return $query->paginate($size, ['*'], 'page', $page)->toArray();
     }
 
+    /**
+     * Obtener varios roles sin paginación, usando skip y take.
+     *
+     * @param array $filters Filtros incluyendo 'skip', 'take', 'search', etc.
+     * @return object Colección de roles.
+     */
     public function all(array $filters): object
     {
         $skip = $filters['skip'] ?? config('accessmanager.pagination.default_skip');
@@ -36,6 +46,12 @@ class CapabilityRoleService
         return $query->skip($skip)->take($take)->get();
     }
 
+    /**
+     * Obtener roles con información básica (id y nombre).
+     *
+     * @param array $filters Filtros de búsqueda como 'take', 'search', etc.
+     * @return object Colección simplificada de roles.
+     */
     public function options(array $filters): object
     {
         $take = $filters['take'] ?? config('accessmanager.pagination.default_take');
@@ -48,39 +64,91 @@ class CapabilityRoleService
     }
 
     /**
-     * Crear un nuevo CapabilityRole.
+     * Crear un nuevo rol.
+     *
+     * @param array $data Datos del rol: 'name', 'code', 'status', 'created_by'.
+     * @return CapabilityRole El nuevo rol creado.
      */
     public function create(array $data)
     {
-        return CapabilityRole::create([
-            'name' => $data['name'],
-            'code' => $data['code'],
-            'status' => $data['status'] ?? 'inactive',
-            'created_by' => $data['created_by'],
-        ]);
+        DB::beginTransaction();
+    
+        try {
+            $role = CapabilityRole::create([
+                'name' => $data['name'],
+                'code' => $data['code'],
+                'status' => $data['status'] ?? 'inactive',
+                'created_by' => $data['created_by'],
+            ]);
+
+            // Procesar permissions
+            if (!empty($data['permissions'])) {
+                (new CapabilityPermissionService($this))->assigned($role, $data['permissions']);
+            }
+
+            // Si todo es exitoso, confirmar la transacción
+            DB::commit();
+
+            // Agregar roles al modelo
+            $role->load('permissions');
+
+            return $role;
+        } catch (\Exception $e) {
+            // Si ocurre un error, revertir la transacción
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
-     * Actualizar un CapabilityRole.
+     * Actualizar un rol existente (no permite modificar 'code' ni 'created_by').
+     *
+     * @param int $id ID del rol.
+     * @param array $data Datos a actualizar: 'name', 'status'.
+     * @return CapabilityRole Rol actualizado.
+     * @throws ModelNotFoundException Si el rol no existe.
      */
     public function update($id, array $data)
     {
-        $role = CapabilityRole::find($id);
+        DB::beginTransaction();
 
-        if (!$role) {
-            throw new ModelNotFoundException('Role not found');
+        try {
+            $role = CapabilityRole::find($id);
+
+            if (!$role) {
+                throw new ModelNotFoundException('Role not found');
+            }
+
+            // No permitir la modificación de 'code' y 'created_by'
+            $role->name = $data['name'];
+            $role->status = $data['status'];
+            $role->save();
+
+            // Procesar permissions
+            if (!empty($data['permissions'])) {
+                (new CapabilityPermissionService($this))->assigned($role, $data['permissions'], true);
+            }
+
+            // Si todo es exitoso, confirmar la transacción
+            DB::commit();
+
+            // Agregar roles al modelo
+            $role->load('permissions');
+
+            return $role;
+        } catch (\Exception $e) {
+            // Si ocurre un error, revertir la transacción
+            DB::rollBack();
+            throw $e;
         }
-
-        // No permitir la modificación de 'code' y 'created_by'
-        $role->name = $data['name'];
-        $role->status = $data['status'];
-        $role->save();
-
-        return $role;
     }
 
     /**
-     * Mostrar un CapabilityRole por ID.
+     * Mostrar los detalles de un rol por su ID.
+     *
+     * @param int $id ID del rol.
+     * @return CapabilityRole Instancia del rol encontrado.
+     * @throws ModelNotFoundException Si no se encuentra el rol.
      */
     public function show($id)
     {
@@ -94,7 +162,11 @@ class CapabilityRoleService
     }
 
     /**
-     * Eliminar un CapabilityRole.
+     * Eliminar un rol por su ID.
+     *
+     * @param int $id ID del rol.
+     * @return bool True si se elimina correctamente.
+     * @throws ModelNotFoundException Si no se encuentra el rol.
      */
     public function delete($id)
     {
@@ -109,6 +181,13 @@ class CapabilityRoleService
         return true;
     }
 
+    /**
+     * Aplicar filtros dinámicos a la consulta de roles.
+     *
+     * @param Builder $query Consulta base de Eloquent (por referencia).
+     * @param array $filters Filtros como 'search', 'code', 'status', etc.
+     * @return void
+     */
     public function filters(Builder &$query, array $filters): void
     {
         if (!empty($filters['search'])) {
@@ -117,10 +196,10 @@ class CapabilityRoleService
             });
         }
         if (!empty($filters['code'])) {
-            $query->where('code', '=', $filters['question']);
+            $query->where('code', '=', $filters['code']);
         }
         if (!empty($filters['name'])) {
-            $query->where('keywords', 'like', '%' . $filters['keyword'] . '%');
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -131,6 +210,15 @@ class CapabilityRoleService
         $query->orderBy($orderField, $orderSort);
     }
 
+    /**
+     * Asignar uno o varios roles a una entidad (usuario, grupo, etc.).
+     *
+     * @param string $entityModule Módulo o tipo de entidad.
+     * @param string $entityId ID de la entidad.
+     * @param array|int $roleIds IDs de los roles a asignar.
+     * @param bool $update Si es true, sincroniza eliminando los roles antiguos.
+     * @return void
+     */
     public function assigned(string $entityModule, string $entityId, $roleIds, bool $update = false): void
     {
         if (empty($roleIds)) {

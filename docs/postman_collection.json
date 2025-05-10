@@ -15,6 +15,16 @@
 						{
 							"name": "Store",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [
 									{
@@ -30,7 +40,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"code\": \"rol_admin\",\r\n  \"name\": \"Administrador\",\r\n  \"status\": \"active\"\r\n}",
+									"raw": "{\r\n  \"code\": \"rol_admin\",\r\n  \"name\": \"Administrador\",\r\n  \"permissions\": [1, 2, 3],\r\n  \"status\": \"active\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -52,8 +62,181 @@
 							"response": []
 						},
 						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/roles",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/roles/all",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"roles",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Options",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/roles/options",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"roles",
+										"options"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/roles/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"roles",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Update",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [
 									{
@@ -69,7 +252,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"name\": \"Administrador\",\r\n  \"status\": \"inactive\"\r\n}",
+									"raw": "{\r\n  \"name\": \"Administrador\",\r\n  \"permissions\": [1, 2, 3],\r\n  \"status\": \"inactive\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -77,7 +260,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}api/access/capability/roles/{id}",
+									"raw": "{{url}}api/access/capability/roles/1",
 									"host": [
 										"{{url}}api"
 									],
@@ -85,78 +268,7 @@
 										"access",
 										"capability",
 										"roles",
-										"{id}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Show",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{url}}api/access/capability/roles/{id}",
-									"host": [
-										"{{url}}api"
-									],
-									"path": [
-										"access",
-										"capability",
-										"roles",
-										"{id}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Index",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{url}}api/access/capability/roles?page=1&size=10",
-									"host": [
-										"{{url}}api"
-									],
-									"path": [
-										"access",
-										"capability",
-										"roles"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "1"
-										},
-										{
-											"key": "size",
-											"value": "10"
-										}
+										"1"
 									]
 								}
 							},
@@ -165,6 +277,16 @@
 						{
 							"name": "Destroy",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "DELETE",
 								"header": [
 									{
@@ -179,7 +301,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}api/access/capability/roles/{id}",
+									"raw": "{{url}}api/access/capability/roles/1",
 									"host": [
 										"{{url}}api"
 									],
@@ -187,7 +309,175 @@
 										"access",
 										"capability",
 										"roles",
-										"{id}"
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Capability Permission",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/permissions",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"permissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/permissions/all",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"permissions",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Options",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/permissions/options",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"permissions",
+										"options"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/permissions/1",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"permissions",
+										"1"
 									]
 								}
 							},
