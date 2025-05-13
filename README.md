@@ -73,7 +73,18 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
     Este comando descargará el paquete y actualizará tu archivo `composer.json`.
 
-5.  **Configurar el modelo de usuario (opcional):**
+5.  **Publicar archivo de configuración:**
+
+    Ejecuta el siguiente comando para copiar los archivos de configuración del paquete a la carpeta `config` del proyecto::
+
+    ```bash
+    php artisan vendor:publish --tag=accessmanager-config
+    
+    ```
+    
+    Esto te permitirá personalizar el comportamiento del paquete desde tu proyecto.
+
+6.  **Configurar el modelo de usuario (opcional):**
 
     Puedes editar el archivo `config/accessmanager.php` y modifica la entrada `user_entity` con la información de tu modelo:
 
@@ -84,7 +95,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     ],
     ```
 
-6.  **Ejecutar las migraciones:**
+7.  **Ejecutar las migraciones:**
 
     Ejecuta las migraciones del paquete para crear las tablas necesarias en la base de datos:
 
@@ -94,7 +105,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
     **Nota:** Esta migración agrega un campo `admin` a la tabla de usuarios. Se recomienda no incluir este campo en el atributo `fillable` del modelo para evitar modificaciones accidentales.
 
-7.  **Ejecutar el seeder:**
+8.  **Ejecutar el seeder:**
 
     Ejecuta el seeder del paquete para poblar las tablas con datos iniciales:
 
@@ -102,7 +113,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     php artisan db:seed --class="LechugaNegra\\AccessManager\\Database\\Seeders\\DatabaseSeeder"
     ```
 
-8.  **Limpiar la caché:**
+9.  **Limpiar la caché:**
 
     Limpia la caché de configuración y rutas para asegurar que los cambios se apliquen correctamente:
 
@@ -113,7 +124,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     php artisan route:cache
     ```
     
-9.  **Regenerar clases:**
+10.  **Regenerar clases:**
 
     Regenerar las clases con el cargador automático "autoload"
 

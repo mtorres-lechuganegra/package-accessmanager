@@ -18,8 +18,8 @@ class CapabilityPermissionService
      */
     public function list($filters)
     {
-        $page = $filters['page'] ?? config('accessmanager.pagination.default_page');
-        $size = $filters['size'] ?? config('accessmanager.pagination.default_size');
+        $page = $filters['page'] ?? config('accessmanager.default_page');
+        $size = $filters['size'] ?? config('accessmanager.default_size');
         
         $query = CapabilityPermission::query();
 
@@ -36,8 +36,8 @@ class CapabilityPermissionService
      */
     public function all(array $filters): object
     {
-        $skip = $filters['skip'] ?? config('accessmanager.pagination.default_skip');
-        $take = $filters['take'] ?? config('accessmanager.pagination.default_take');
+        $skip = $filters['skip'] ?? config('accessmanager.default_skip');
+        $take = $filters['take'] ?? config('accessmanager.default_take');
 
         $query = CapabilityPermission::query();
 
@@ -54,7 +54,7 @@ class CapabilityPermissionService
      */
     public function options(array $filters): object
     {
-        $take = $filters['take'] ?? config('accessmanager.pagination.default_take');
+        $take = $filters['take'] ?? config('accessmanager.default_take');
 
         $query = CapabilityPermission::query();
 

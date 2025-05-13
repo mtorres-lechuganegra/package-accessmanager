@@ -37,12 +37,8 @@ class AccessManagerProvider extends ServiceProvider
         // Cargar configuración predeterminada desde el paquete
         $this->publishes([
             __DIR__ . '/../../config/accessmanager.php' => config_path('accessmanager.php'),
-        ], 'config');
-
-        // Cargar configuración personalizada para módulos, permisos y rutas
-        $this->publishes([
             __DIR__ . '/../../config/accessmanager_seeders.php' => config_path('accessmanager_seeders.php'),
-        ], 'config');
+        ], 'accessmanager-config');
 
         // Registrar el middleware en el Kernel de la aplicación
         $this->app['router']->aliasMiddleware('capability.access', CapabilityAccessMiddleware::class);
