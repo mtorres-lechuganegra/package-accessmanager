@@ -41,33 +41,33 @@ return [
         'modules' => [
             // Capability roles
             'capability_roles' => [
-                'name' => 'Roles de capacidad',
+                'name' => 'Capacidad de roles',
                 'permissions' => [
-                    'create_capability_role' => [
-                        'name' => 'Crear rol de capacidad',
+                    'capability_role_create' => [
+                        'name' => 'Crear capacidad de rol',
                         'type' => 'action',
                         'route' => 'api.access.capability.roles.create', // Ruta asociada al permiso
                     ],
-                    'update_capability_role' => [
-                        'name' => 'Actualizar rol de capacidad',
+                    'capability_role_update' => [
+                        'name' => 'Actualizar capacidad de rol',
                         'type' => 'action',
                         'route' => 'api.access.capability.roles.update', // Ruta asociada al permiso
                     ],
-                    'delete_capability_role' => [
-                        'name' => 'Eliminar rol de capacidad',
+                    'capability_role_delete' => [
+                        'name' => 'Eliminar capacidad de rol',
                         'type' => 'action',
                         'route' => 'api.access.capability.roles.delete', // Ruta asociada al permiso
                     ],
-                    'view_capability_role' => [
-                        'name' => 'Ver rol de capacidad',
+                    'capability_role_view' => [
+                        'name' => 'Ver capacidad de rol',
                         'type' => 'access',
                         'route' => 'api.access.capability.roles.view', // Ruta asociada al permiso
                     ],
-                    'list_capability_roles' => [
-                        'name' => 'Listar roles de capacidad',
+                    'capability_roles_list' => [
+                        'name' => 'Listar capacidad de roles',
                         'type' => 'access',
                         'route' => 'api.access.capability.roles.list', // Ruta asociada al permiso
-                    ],
+                    ]
                 ]
             ]
         ]

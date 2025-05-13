@@ -24,22 +24,23 @@ class AccessManagerSeeder extends Seeder
         $allConfig = array_merge($config, $customConfig);
 
         // Recorrer la configuración y crear los módulos, permisos y rutas
-        foreach ($allConfig as $moduleData) {
-            $this->createModuleAndPermissions($moduleData);
+        foreach ($allConfig as $keyModule => $moduleData) {
+            $this->createModuleAndPermissions($keyModule, $moduleData);
         }
     }
 
     /**
      * Crea un módulo, sus permisos y las rutas asociadas.
      *
+     * @param string $keyModule
      * @param array $moduleData
      * @return void
      */
-    private function createModuleAndPermissions(array $moduleData)
+    private function createModuleAndPermissions(string $keyModule, array $moduleData)
     {
         // Crear el módulo en la base de datos
         $module = CapabilityModule::firstOrCreate([
-            'code' => $moduleData['name'],
+            'code' => $this->formatMachineKey($keyModule),
             'name' => $moduleData['name']
         ]);
 
@@ -59,13 +60,30 @@ class AccessManagerSeeder extends Seeder
 
             // Crear los permisos
             CapabilityPermission::firstOrCreate([
-                'code' => $permissionKey,
+                'code' => $this->formatMachineKey($permissionKey),
             ], [
                 'name' => $permissionData['name'],
-                'type' => $permissionData['type'],
+                'type' => strtolower($permissionData['type']),
                 'capability_module_id' => $module->id,
                 'capability_route_id' => $routeId
             ]);
         }
+    }
+
+    /**
+     * Formatea el texto a formato máquina.
+     *
+     * @param string $text
+     * @return string
+     */
+    private function formatMachineKey(string $text): string
+    {
+        $text = mb_strtolower($text, 'UTF-8'); // Todo a minúscula
+        $text = str_replace('ñ', 'n', $text); // Reemplazar ñ por n
+        $text = preg_replace('/[^\w.]+/u', '_', $text); // Reemplazar cualquier grupo de caracteres no "palabra" o "." por _
+        $text = preg_replace('/[^a-z_.]/', '', $text); // Eliminar todo lo que no sea a-z, "." o "_"
+        $text = preg_replace('/_+/', '_', $text); // Colapsar múltiples "_" en uno solo
+        $text = trim($text, '_'); // Eliminar "_" inicial o final si los hay
+        return $text;
     }
 }
