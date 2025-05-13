@@ -45,12 +45,17 @@ class AccessManagerSeeder extends Seeder
 
         // Crear los permisos asociados al módulo
         foreach ($moduleData['permissions'] as $permissionKey => $permissionData) {
-            // Crear las rutas si no existen
-            $route = CapabilityRoute::firstOrCreate([
-                'path' => $permissionData['route'],
-            ], [
-                'name' => $permissionData['name']
-            ]);
+            $routeId = null;
+    
+            // Validar creación de ruta
+            if (!empty($permissionData['route'])) {
+                // Crear las rutas si no existen
+                $route = CapabilityRoute::firstOrCreate(
+                    ['path' => $permissionData['route']],
+                    ['name' => $permissionData['name']]
+                );
+                $routeId = $route->id;
+            }
 
             // Crear los permisos
             CapabilityPermission::firstOrCreate([
@@ -59,9 +64,8 @@ class AccessManagerSeeder extends Seeder
                 'name' => $permissionData['name'],
                 'type' => $permissionData['type'],
                 'capability_module_id' => $module->id,
-                'capability_route_id' => $route->id
+                'capability_route_id' => $routeId
             ]);
         }
     }
-
 }
