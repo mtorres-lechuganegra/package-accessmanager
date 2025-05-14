@@ -428,7 +428,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}api/access/capability/permissions/options",
+									"raw": "{{url}}api/access/capability/permissions/options?group=1",
 									"host": [
 										"{{url}}api"
 									],
@@ -437,10 +437,91 @@
 										"capability",
 										"permissions",
 										"options"
+									],
+									"query": [
+										{
+											"key": "group",
+											"value": "1"
+										}
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "Options",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}api/access/capability/permissions/options",
+											"host": [
+												"{{url}}api"
+											],
+											"path": [
+												"access",
+												"capability",
+												"permissions",
+												"options"
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "Options Group",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{url}}api/access/capability/permissions/options?group=1",
+											"host": [
+												"{{url}}api"
+											],
+											"path": [
+												"access",
+												"capability",
+												"permissions",
+												"options"
+											],
+											"query": [
+												{
+													"key": "group",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"_postman_previewlanguage": null,
+									"header": null,
+									"cookie": [],
+									"body": null
+								}
+							]
 						},
 						{
 							"name": "Show",

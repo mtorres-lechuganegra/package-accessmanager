@@ -74,6 +74,7 @@ class CapabilityRoleService
         DB::beginTransaction();
     
         try {
+            // Crear rol
             $role = CapabilityRole::create([
                 'name' => $data['name'],
                 'code' => $data['code'],

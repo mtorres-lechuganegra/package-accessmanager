@@ -56,11 +56,38 @@ class CapabilityPermissionService
     {
         $take = $filters['take'] ?? config('accessmanager.default_take');
 
-        $query = CapabilityPermission::query();
-
+        $query = CapabilityPermission::with('module:id,code,name')
+            ->select('id', 'name', 'capability_module_id');
+    
         $this->filters($query, $filters);
 
-        return $query->select(['id', 'name'])->skip(0)->take($take)->get();
+        // Paginación aplicada ANTES de agrupar
+        $output = $query->skip(0)->take($take)->get();
+    
+        // Agrupar por módulo solo los permisos obtenidos
+        if (!empty($filters['group'])) {
+            return $output->groupBy('capability_module_id')->map(function ($group) {
+                $module = $group->first()->module;
+    
+                return [
+                    'id' => $module->id,
+                    'code' => $module->code,
+                    'name' => $module->name,
+                    'permissions' => $group->map(fn($permission) => [
+                        'id' => $permission->id,
+                        'name' => $permission->name,
+                    ])->values()
+                ];
+            })->values();
+        } else {
+            // Retornar valores simples
+            return $output->map(function ($permission) {
+                return [
+                    'id' => $permission->id,
+                    'name' => $permission->name
+                ];
+            })->values();
+        }
     }
 
     /**
