@@ -4,12 +4,13 @@ namespace LechugaNegra\AccessManager\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CapabilityRoleResource extends JsonResource
+class CapabilityPermissionShowResource extends JsonResource
 {
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'permissions' => $this->permissions()->orderBy('name', 'asc')->get()->toArray(),
+            'route' => $this->route()->get()->toArray(),
+            'module' => $this->module()->get()->toArray(),
         ]);
     }
 }

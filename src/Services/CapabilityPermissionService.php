@@ -100,13 +100,13 @@ class CapabilityPermissionService
      */
     public function show($id)
     {
-        $role = CapabilityPermission::find($id);
+        $permission = CapabilityPermission::find($id);
 
-        if (!$role) {
-            throw new ModelNotFoundException('Role not found');
+        if (!$permission) {
+            throw new ModelNotFoundException('Permission not found');
         }
 
-        return $role;
+        return $permission;
     }
 
     /**
@@ -139,7 +139,7 @@ class CapabilityPermissionService
     }
 
     /**
-     * Asignar uno o varios roles a una entidad (usuario, grupo, etc.).
+     * Asignar uno o varios permissions a un rol (capability_roles).
      *
      * @param CapabilityRole $role de entidad.
      * @param array|int $permissionIds IDs de los roles a asignar.

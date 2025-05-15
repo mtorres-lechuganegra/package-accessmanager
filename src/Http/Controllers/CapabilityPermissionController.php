@@ -4,7 +4,9 @@ namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionResource;
+use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionAllResource;
+use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionIndexResource;
+use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityPermissionService;
 
 class CapabilityPermissionController extends Controller
@@ -25,7 +27,10 @@ class CapabilityPermissionController extends Controller
     public function index(Request $request)
     {
         try {
-            $roles = $this->capabilityPermissionService->list($request->all());
+            $registers = $this->capabilityPermissionService->list($request->all());
+            return CapabilityPermissionIndexResource::collection($registers)
+                ->response()
+                ->setStatusCode(200);
             return response()->json($roles, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
@@ -42,9 +47,9 @@ class CapabilityPermissionController extends Controller
     {
         try {
             $registers = $this->capabilityPermissionService->all($request->all());
-            return response()->json([
-                'data' => $registers
-            ], 200);
+            return CapabilityPermissionAllResource::collection($registers)
+                ->response()
+                ->setStatusCode(200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }
@@ -79,7 +84,7 @@ class CapabilityPermissionController extends Controller
         try {
             $permission = $this->capabilityPermissionService->show($id);
 
-            return (new CapabilityPermissionResource($permission))
+            return (new CapabilityPermissionShowResource($permission))
                 ->response()
                 ->setStatusCode(200);
         } catch (\Exception $e) {

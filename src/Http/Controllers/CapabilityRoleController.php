@@ -8,7 +8,7 @@ use LechugaNegra\AccessManager\Http\Requests\UpdateCapabilityRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityRoleResource;
+use LechugaNegra\AccessManager\Http\Resources\CapabilityRoleShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityRoleService;
 
 class CapabilityRoleController extends Controller
@@ -29,8 +29,8 @@ class CapabilityRoleController extends Controller
     public function index(Request $request)
     {
         try {
-            $roles = $this->capabilityRoleService->list($request->all());
-            return response()->json($roles, 200);
+            $registers = $this->capabilityRoleService->list($request->all());
+            return response()->json($registers, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }
@@ -92,7 +92,7 @@ class CapabilityRoleController extends Controller
         
             $role = $this->capabilityRoleService->create($data);
 
-            return (new CapabilityRoleResource($role))
+            return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
         } catch (\Exception $e) {
@@ -112,7 +112,7 @@ class CapabilityRoleController extends Controller
         try {
             $role = $this->capabilityRoleService->update($id, $request->validated());
 
-            return (new CapabilityRoleResource($role))
+            return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
         } catch (\Exception $e) {
@@ -131,7 +131,7 @@ class CapabilityRoleController extends Controller
         try {
             $role = $this->capabilityRoleService->show($id);
 
-            return (new CapabilityRoleResource($role))
+            return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
         } catch (\Exception $e) {
