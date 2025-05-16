@@ -31,7 +31,6 @@ class CapabilityPermissionController extends Controller
             return CapabilityPermissionIndexResource::collection($registers)
                 ->response()
                 ->setStatusCode(200);
-            return response()->json($roles, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         }

@@ -158,7 +158,7 @@ Usar el modelo que funcionará como puente de comunicación en una relación pol
 use Lechuganegra\AccessManager\Models\RelationEntityRole;
 ```
 
-Agregar la función de relación através dle puente de conexión:
+Agregar la función de relación através del puente de conexión:
 
 ```php
 public function roles()

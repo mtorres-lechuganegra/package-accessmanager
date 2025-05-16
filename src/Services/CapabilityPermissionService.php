@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
 use Lechuganegra\AccessManager\Models\CapabilityRole;
+use Lechuganegra\AccessManager\Models\RelationEntityRole;
 
 class CapabilityPermissionService
 {
@@ -177,15 +178,38 @@ class CapabilityPermissionService
         })->first();
 
         if (!$permission) {
-            return false;
+            return true;
         }
 
         // Obtener el usuario autenticado
         $user = Auth::user();
+       
+        return RelationEntityRole::where('entity_module', config('accessmanager.user_entity.table'))
+            ->where('entity_id', $user->id)
+            ->whereHas('role.permissions', function ($query) use ($permission) {
+                $query->where('capability_permissions.id', $permission->id);
+            })
+            ->exists();
+    }
 
-        // Verificar si el usuario tiene el permiso correspondiente a través de los roles asignados
-        return $user->roles->flatMap(function ($role) {
-            return $role->permissions;  // Relación de muchos a muchos entre roles y permisos
-        })->contains('id', $permission->id);
+    /**
+     * Obtiene los códigos únicos de permisos asignados a una entidad según sus roles.
+     *
+     * @param string $entityModule Nombre del módulo (ej: 'users', 'admins', etc.)
+     * @param int $entityId ID de la entidad (usuario u otra)
+     * @return array Lista de códigos de permisos (sin repetidos)
+     */
+    public function getPermissionsByEntity(string $entityModule, int $entityId): array
+    {
+        return RelationEntityRole::where('entity_module', $entityModule)
+            ->where('entity_id', $entityId)
+            ->with('role.permissions')
+            ->get()
+            ->pluck('role.permissions')
+            ->flatten()
+            ->pluck('code')
+            ->unique()
+            ->values()
+            ->toArray();
     }
 }
