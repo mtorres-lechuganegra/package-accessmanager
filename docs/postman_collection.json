@@ -565,6 +565,52 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Capability Session",
+					"item": [
+						{
+							"name": "Permissions",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}api/access/capability/session/permissions",
+									"host": [
+										"{{url}}api"
+									],
+									"path": [
+										"access",
+										"capability",
+										"session",
+										"permissions"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
