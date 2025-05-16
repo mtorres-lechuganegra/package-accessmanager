@@ -31,45 +31,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Access
+    | Sync
     |--------------------------------------------------------------------------
     |
-    | Cascada de módulos, permisos y rutas para la gestión de roles.
+    | Sincronización de en cascada de módulos, permisos y rutas para la gestión de roles.
     |
     */
-    'seeders' => [
-        'modules' => [
-            // Capability roles
-            'capability_roles' => [
-                'name' => 'Capacidad de roles',
-                'permissions' => [
-                    'capability_role_create' => [
-                        'name' => 'Crear capacidad de rol',
-                        'type' => 'action',
-                        'route' => 'api.access.capability.roles.store', // Ruta asociada al permiso
-                    ],
-                    'capability_role_update' => [
-                        'name' => 'Actualizar capacidad de rol',
-                        'type' => 'action',
-                        'route' => 'api.access.capability.roles.update', // Ruta asociada al permiso
-                    ],
-                    'capability_role_delete' => [
-                        'name' => 'Eliminar capacidad de rol',
-                        'type' => 'action',
-                        'route' => 'api.access.capability.roles.destroy', // Ruta asociada al permiso
-                    ],
-                    'capability_role_show' => [
-                        'name' => 'Ver capacidad de rol',
-                        'type' => 'access',
-                        'route' => 'api.access.capability.roles.show', // Ruta asociada al permiso
-                    ],
-                    'capability_roles_list' => [
-                        'name' => 'Listar capacidad de roles',
-                        'type' => 'access',
-                        'route' => 'api.access.capability.roles.index', // Ruta asociada al permiso
-                    ]
-                ]
-            ]
-        ]
-    ]
+    'strict_sync' => env('ACCESS_MANAGER_STRICT_SYNC', false),
 ];

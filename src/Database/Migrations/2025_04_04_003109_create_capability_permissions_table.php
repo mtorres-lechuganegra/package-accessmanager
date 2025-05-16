@@ -20,7 +20,6 @@ return new class extends Migration
         
             // Definimos las claves foráneas
             $table->foreignId('capability_module_id')->constrained('capability_modules')->onDelete('cascade');
-            $table->foreignId('capability_route_id')->nullable()->constrained('capability_routes')->onDelete('set null');
         });
     }
 

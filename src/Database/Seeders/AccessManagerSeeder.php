@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Lechuganegra\AccessManager\Models\CapabilityModule;
 use Lechuganegra\AccessManager\Models\CapabilityPermission;
 use Lechuganegra\AccessManager\Models\CapabilityRoute;
@@ -17,14 +18,14 @@ class AccessManagerSeeder extends Seeder
     public function run()
     {
         // Cargar los archivos de configuración de los módulos y custom
-        $config = config('accessmanager.seeders.modules');
-        $customConfig = config('accessmanager_seeders.modules');
+        $syncDefinitions = $this->systemDefinitions();
+        $syncCustom = config('accessmanager_seeders.modules');
 
         // Unir ambos archivos de configuración
-        $allConfig = array_merge($config, $customConfig);
+        $sync = array_merge($syncDefinitions, $syncCustom);
 
         // Recorrer la configuración y crear los módulos, permisos y rutas
-        foreach ($allConfig as $keyModule => $moduleData) {
+        foreach ($sync as $keyModule => $moduleData) {
             $this->createModuleAndPermissions($keyModule, $moduleData);
         }
     }
@@ -39,35 +40,93 @@ class AccessManagerSeeder extends Seeder
     private function createModuleAndPermissions(string $keyModule, array $moduleData)
     {
         // Crear el módulo en la base de datos
-        $module = CapabilityModule::firstOrCreate([
-            'code' => $this->formatMachineKey($keyModule),
-            'name' => $moduleData['name']
-        ]);
+        $moduleCode = $this->formatMachineKey($keyModule);
+        $module = CapabilityModule::updateOrCreate(
+            ['code' => $moduleCode],
+            ['name' => $moduleData['name']]
+        );
 
         // Crear los permisos asociados al módulo
         foreach ($moduleData['permissions'] as $permissionKey => $permissionData) {
-            $routeId = null;
+            $permissionCode = $this->formatMachineKey($permissionKey);
     
-            // Validar creación de ruta
-            if (!empty($permissionData['route'])) {
-                // Crear las rutas si no existen
-                $route = CapabilityRoute::firstOrCreate(
-                    ['path' => $permissionData['route']],
-                    ['name' => $permissionData['name']]
-                );
-                $routeId = $route->id;
-            }
-
             // Crear los permisos
-            CapabilityPermission::firstOrCreate([
-                'code' => $this->formatMachineKey($permissionKey),
-            ], [
-                'name' => $permissionData['name'],
-                'type' => strtolower($permissionData['type']),
-                'capability_module_id' => $module->id,
-                'capability_route_id' => $routeId
-            ]);
+            $permission = CapabilityPermission::firstOrCreate(
+                ['code' => $permissionCode],
+                [
+                    'name' => $permissionData['name'],
+                    'type' => strtolower($permissionData['type']),
+                    'capability_module_id' => $module->id,
+                ]
+            );
+    
+            // Creación y asociación de rutas
+            if (!empty($permissionData['routes'])) {
+                $routeIds = collect($permissionData['routes'])->map(function ($route) {
+                    $route = CapabilityRoute::firstOrCreate(['path' => $route]);
+                    return $route->id;
+                })->toArray();
+    
+                // Relación muchos a muchos entre permiso y ruta
+                if (config('accessmanager.strict_sync')) {
+                    $permission->routes()->sync($routeIds);
+                } else {
+                    $permission->routes()->syncWithoutDetaching($routeIds);
+                }
+            }
         }
+    }
+
+    /**
+     * Arreglo de módulos, permisos y rutas.
+     *
+     * @return array
+     */
+    private function systemDefinitions(): array
+    {
+        return [
+            // Capability roles
+            'capability_roles' => [
+                'name' => 'Capacidad de roles',
+                'permissions' => [
+                    'capability_role_create' => [
+                        'name' => 'Crear capacidad de rol',
+                        'type' => 'action',
+                        'routes' => [
+                            'api.access.capability.roles.store'
+                        ]
+                    ],
+                    'capability_role_update' => [
+                        'name' => 'Actualizar capacidad de rol',
+                        'type' => 'action',
+                        'routes' => [
+                            'api.access.capability.roles.update'
+                        ]
+                    ],
+                    'capability_role_delete' => [
+                        'name' => 'Eliminar capacidad de rol',
+                        'type' => 'action',
+                        'routes' => [
+                            'api.access.capability.roles.destroy'
+                        ]
+                    ],
+                    'capability_role_show' => [
+                        'name' => 'Ver capacidad de rol',
+                        'type' => 'access',
+                        'routes' => [
+                            'api.access.capability.roles.show'
+                        ]
+                    ],
+                    'capability_roles_list' => [
+                        'name' => 'Listar capacidad de roles',
+                        'type' => 'access',
+                        'routes' => [
+                            'api.access.capability.roles.index'
+                        ]
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -84,6 +143,6 @@ class AccessManagerSeeder extends Seeder
         $text = preg_replace('/[^a-z_.]/', '', $text); // Eliminar todo lo que no sea a-z, "." o "_"
         $text = preg_replace('/_+/', '_', $text); // Colapsar múltiples "_" en uno solo
         $text = trim($text, '_'); // Eliminar "_" inicial o final si los hay
-        return $text;
+        return trim($text);
     }
 }

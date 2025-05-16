@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
 use Lechuganegra\AccessManager\Models\CapabilityRole;
+use Lechuganegra\AccessManager\Models\CapabilityRoute;
 use Lechuganegra\AccessManager\Models\RelationEntityRole;
 
 class CapabilityPermissionService
@@ -172,22 +173,24 @@ class CapabilityPermissionService
      */
     public function hasPermissionForRoute(string $routeName): bool
     {
-        // Obtener el permiso relacionado con la ruta solicitada
-        $permission = CapabilityPermission::whereHas('route', function($query) use ($routeName) {
-            $query->where('path', $routeName);
-        })->first();
+        // Obtener el usuario autenticado
+        $user = Auth::user();
 
-        if (!$permission) {
+        // Obtener el permiso relacionado con la ruta solicitada
+        $permissionCodes = CapabilityRoute::where('path', $routeName)
+            ->first()
+            ?->permissions()
+            ->pluck('capability_permissions.code')
+            ->toArray();
+
+        if (empty($permissionCodes)) {
             return true;
         }
 
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-       
         return RelationEntityRole::where('entity_module', config('accessmanager.user_entity.table'))
             ->where('entity_id', $user->id)
-            ->whereHas('role.permissions', function ($query) use ($permission) {
-                $query->where('capability_permissions.id', $permission->id);
+            ->whereHas('role.permissions', function ($query) use ($permissionCodes) {
+                $query->whereIn('capability_permissions.code', $permissionCodes);
             })
             ->exists();
     }
@@ -203,11 +206,13 @@ class CapabilityPermissionService
     {
         return RelationEntityRole::where('entity_module', $entityModule)
             ->where('entity_id', $entityId)
-            ->with('role.permissions')
+            ->with('role.permissions.routes')
             ->get()
             ->pluck('role.permissions')
             ->flatten()
-            ->pluck('code')
+            ->pluck('routes')
+            ->flatten()
+            ->pluck('path')
             ->unique()
             ->values()
             ->toArray();

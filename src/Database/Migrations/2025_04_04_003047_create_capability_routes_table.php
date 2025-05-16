@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('capability_routes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('path')->unique(); // Usamos path como el alias
             $table->timestamps();
         });

@@ -26,14 +26,20 @@ class CapabilityPermission extends Model
     }
 
     // Relación con el modelo CapabilityRoute.
-    public function route()
-    {
-        return $this->belongsTo(CapabilityRoute::class, 'capability_route_id');
-    }
+    // public function route()
+    // {
+    //     return $this->belongsTo(CapabilityRoute::class, 'capability_route_id');
+    // }
 
     // Relación con los roles que tienen este permiso.
     public function roles()
     {
         return $this->belongsToMany(CapabilityRole::class, 'relation_role_permission', 'capability_permission_id', 'capability_role_id');
+    }
+
+    // Relación con los roles que tienen este permiso.
+    public function routes()
+    {
+        return $this->belongsToMany(CapabilityRoute::class, 'relation_permission_route', 'capability_permission_id', 'capability_route_id');
     }
 }

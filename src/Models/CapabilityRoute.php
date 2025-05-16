@@ -17,8 +17,14 @@ class CapabilityRoute extends Model
     ];
 
     // En el modelo CapabilityRoute
+    // public function permissions()
+    // {
+    //     return $this->hasMany(CapabilityPermission::class, 'capability_route_id');
+    // }
+
+    // Relación con los roles que tienen este permiso.
     public function permissions()
     {
-        return $this->hasMany(CapabilityPermission::class, 'capability_route_id');
+        return $this->belongsToMany(CapabilityPermission::class, 'relation_permission_route', 'capability_route_id', 'capability_permission_id');
     }
 }

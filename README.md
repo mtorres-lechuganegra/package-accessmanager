@@ -9,6 +9,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 * **Banco de Permisos:** Asigna permisos específicos a roles, controlando las acciones que cada rol puede realizar.
 * **Banco de Rutas:** Asocia permisos a rutas concretas, protegiendo el acceso a funcionalidades específicas de la aplicación.
 * **Middleware de Validación:** Valida los permisos de las rutas mediante un middleware, asegurando que solo los usuarios autorizados puedan acceder a ellas.
+* **Arrancador de Capacidades:** Archivo de configuración que permite el registro de modulos, permisos y rutas.
 * **Personalización del Modelo de Usuario:** Permite utilizar un modelo de usuario personalizado, adaptándose a las necesidades de cada proyecto.
 
 ## Instalación
@@ -137,6 +138,15 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 ### Endpoints del Servicio
 
 Puede importar el archivo `postman_collection.json` que se ubica en la carpeta `docs` de la raíz del paquete.
+
+### Variable de Sincronización
+
+Puede determinar el comportamiento de la sincronización de módulos, permisos y rutas activando la siguiente variable de entorno
+
+```nginx
+ACCESS_MANAGER_STRICT_SYNC=false
+```
+Esto permite hacer una sincronización completa o parcial.
 
 ### Middleware de Validación
 
