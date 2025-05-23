@@ -30,6 +30,7 @@ class CapabilitySessionService
 
         // Obtener los permisos de sessión
         return $this->capabilityPermissionService->getPermissionsByEntity(
+            $user,
             config('accessmanager.user_entity.table'),
             $user->id
         );

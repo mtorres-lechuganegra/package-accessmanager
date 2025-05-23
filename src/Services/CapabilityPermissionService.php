@@ -5,6 +5,7 @@ namespace LechugaNegra\AccessManager\Services;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use LechugaNegra\AccessManager\Http\Controllers\CapabilitySessionController;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
 use Lechuganegra\AccessManager\Models\CapabilityRole;
 use Lechuganegra\AccessManager\Models\CapabilityRoute;
@@ -198,23 +199,26 @@ class CapabilityPermissionService
     /**
      * Obtiene los códigos únicos de permisos asignados a una entidad según sus roles.
      *
+     * @param object $user Objeto del usuario
      * @param string $entityModule Nombre del módulo (ej: 'users', 'admins', etc.)
      * @param int $entityId ID de la entidad (usuario u otra)
      * @return array Lista de códigos de permisos (sin repetidos)
      */
-    public function getPermissionsByEntity(string $entityModule, int $entityId): array
+    public function getPermissionsByEntity(object $user, string $entityModule, int $entityId): array
     {
-        return RelationEntityRole::where('entity_module', $entityModule)
-            ->where('entity_id', $entityId)
-            ->with('role.permissions.routes')
-            ->get()
-            ->pluck('role.permissions')
-            ->flatten()
-            ->pluck('routes')
-            ->flatten()
-            ->pluck('path')
-            ->unique()
-            ->values()
-            ->toArray();
+        if ($user->admin) {
+            return CapabilityPermission::pluck('code')->toArray();
+        } else {
+            return RelationEntityRole::where('entity_module', $entityModule)
+                ->where('entity_id', $entityId)
+                ->with('role.permissions.routes')
+                ->get()
+                ->pluck('role.permissions')
+                ->flatten()
+                ->pluck('code')
+                ->unique()
+                ->values()
+                ->toArray();
+        }
     }
 }
