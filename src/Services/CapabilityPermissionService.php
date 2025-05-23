@@ -5,7 +5,6 @@ namespace LechugaNegra\AccessManager\Services;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use LechugaNegra\AccessManager\Http\Controllers\CapabilitySessionController;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
 use Lechuganegra\AccessManager\Models\CapabilityRole;
 use Lechuganegra\AccessManager\Models\CapabilityRoute;
@@ -211,7 +210,6 @@ class CapabilityPermissionService
         } else {
             return RelationEntityRole::where('entity_module', $entityModule)
                 ->where('entity_id', $entityId)
-                ->with('role.permissions.routes')
                 ->get()
                 ->pluck('role.permissions')
                 ->flatten()

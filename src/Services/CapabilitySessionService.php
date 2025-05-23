@@ -2,12 +2,7 @@
 
 namespace LechugaNegra\AccessManager\Services;
 
-use LechugaNegra\AccessManager\Models\CapabilityRole;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Lechuganegra\AccessManager\Models\RelationEntityRole;
 
 class CapabilitySessionService
 {
