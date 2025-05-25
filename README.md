@@ -87,7 +87,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
 6.  **Configurar el modelo de usuario (opcional):**
 
-    Puedes editar el archivo `config/accessmanager.php` y modifica la entrada `user_entity` con la información de tu modelo:
+    Puedes editar el archivo `config/accessmanager.php` de tu proyecto y modificar la entrada `user_entity` con la información de tu modelo:
 
     ```php
     'user_entity' => [
@@ -135,9 +135,18 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
 ## Uso
 
+### Variable de Versión
+
+Puede determinar el uso de versión del paquete.
+
+```nginx
+ACCESS_MANAGER_VERSION=v1
+```
+La versión puede cambiar la estructura y uso de los servicios.
+
 ### Endpoints del Servicio
 
-Puede importar el archivo `postman_collection.json` que se ubica en la carpeta `docs` de la raíz del paquete.
+Puede importar el archivo `postman_collection_{version}.json` que se ubica en la carpeta `docs` de la raíz del paquete.
 
 ### Variable de Sincronización
 

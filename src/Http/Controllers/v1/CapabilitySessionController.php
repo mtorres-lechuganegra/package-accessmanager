@@ -1,10 +1,9 @@
 <?php
 
-namespace LechugaNegra\AccessManager\Http\Controllers;
+namespace LechugaNegra\AccessManager\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use LechugaNegra\AccessManager\Http\Resources\CapabilitySessionResource;
 use LechugaNegra\AccessManager\Services\CapabilitySessionService;
 
 class CapabilitySessionController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace LechugaNegra\AccessManager\Http\Requests;
+namespace LechugaNegra\AccessManager\Http\Requests\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

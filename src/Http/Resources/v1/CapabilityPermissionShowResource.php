@@ -1,6 +1,6 @@
 <?php
 
-namespace LechugaNegra\AccessManager\Http\Resources;
+namespace LechugaNegra\AccessManager\Http\Resources\v1;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -2,6 +2,7 @@
 
 namespace LechugaNegra\AccessManager\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use LechugaNegra\AccessManager\Middleware\CapabilityAccessMiddleware;
 
@@ -42,8 +43,26 @@ class AccessManagerProvider extends ServiceProvider
 
         // Registrar el middleware en el Kernel de la aplicación
         $this->app['router']->aliasMiddleware('capability.access', CapabilityAccessMiddleware::class);
+        
+        // Cargar rutas dinámicas según la versión especificada en config
+        $this->loadVersionedRoutes();
+    }
 
-        // Cargar rutas de api.php
-        $this->loadRoutesFrom(__DIR__.'/../Routes/api.php');
+    /**
+     * Carga el archivo de rutas correspondiente a la versión configurada.
+     *
+     * @return void
+     */
+    protected function loadVersionedRoutes()
+    {
+        $version = config('accessmanager.version', 'v1');
+        $routesPath = __DIR__ . "/../Routes/{$version}/api.php";
+
+        if (file_exists($routesPath)) {
+            Route::prefix("api/v1")
+                ->group($routesPath);
+        } else {
+            throw new \Exception("Routes file not found for version '{$version}'.");
+        }
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace LechugaNegra\AccessManager\Http\Controllers;
+namespace LechugaNegra\AccessManager\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionAllResource;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionIndexResource;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionShowResource;
+use LechugaNegra\AccessManager\Http\Resources\v1\CapabilityPermissionAllResource;
+use LechugaNegra\AccessManager\Http\Resources\v1\CapabilityPermissionIndexResource;
+use LechugaNegra\AccessManager\Http\Resources\v1\CapabilityPermissionShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityPermissionService;
 
 class CapabilityPermissionController extends Controller

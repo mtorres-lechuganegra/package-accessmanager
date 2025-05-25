@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use LechugaNegra\AccessManager\Http\Controllers\CapabilityPermissionController;
-use LechugaNegra\AccessManager\Http\Controllers\CapabilityRoleController;
-use LechugaNegra\AccessManager\Http\Controllers\CapabilitySessionController;
+use LechugaNegra\AccessManager\Http\Controllers\V1\CapabilityPermissionController;
+use LechugaNegra\AccessManager\Http\Controllers\V1\CapabilityRoleController;
+use LechugaNegra\AccessManager\Http\Controllers\V1\CapabilitySessionController;
 
 Route::middleware(['auth:api', 'capability.access'])->group(function () {
-    Route::prefix('api/access')->name('api.access.')->group(function () {
+    Route::prefix('access')->name('api.access.')->group(function () {
         Route::prefix('capability')->name('capability.')->group(function () {
             Route::prefix('session')->name('session.')->group(function () {
                 Route::get('/permissions', [CapabilitySessionController::class, 'permissions'])->name('permissions'); // Listar roles

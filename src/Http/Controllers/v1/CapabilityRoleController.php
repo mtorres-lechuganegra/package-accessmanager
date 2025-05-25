@@ -1,14 +1,14 @@
 <?php
 
-namespace LechugaNegra\AccessManager\Http\Controllers;
+namespace LechugaNegra\AccessManager\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use LechugaNegra\AccessManager\Http\Requests\StoreCapabilityRoleRequest;
-use LechugaNegra\AccessManager\Http\Requests\UpdateCapabilityRoleRequest;
+use LechugaNegra\AccessManager\Http\Requests\V1\StoreCapabilityRoleRequest;
+use LechugaNegra\AccessManager\Http\Requests\V1\UpdateCapabilityRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityRoleShowResource;
+use LechugaNegra\AccessManager\Http\Resources\V1\CapabilityRoleShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityRoleService;
 
 class CapabilityRoleController extends Controller
