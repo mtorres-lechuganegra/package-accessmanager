@@ -47,7 +47,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
         "repositories": [
             {
                 "type": "path",
-                "url": "packages/lechugaNegra/accessmanager"
+                "url": "packages/lechuganegra/accessmanager"
             }
         ]
     }
@@ -58,7 +58,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     {
         "autoload": {
             "psr-4": {
-                "LechugaNegra\\AccessManager\\": "packages/lechugaNegra/accessmanager/src/"
+                "LechugaNegra\\AccessManager\\": "packages/lechuganegra/accessmanager/src/"
             }
         }
     }
