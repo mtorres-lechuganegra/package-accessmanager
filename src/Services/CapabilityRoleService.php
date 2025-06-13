@@ -193,14 +193,15 @@ class CapabilityRoleService
     {
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['search'] . '%');
+                $search = strtolower($filters['search']);
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
             });
         }
         if (!empty($filters['code'])) {
             $query->where('code', '=', $filters['code']);
         }
         if (!empty($filters['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filters['name']) . '%']);
         }
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);

@@ -122,14 +122,15 @@ class CapabilityPermissionService
     {
         if (!empty($filters['search'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['search'] . '%');
+                $search = strtolower($filters['search']);
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
             });
         }
         if (!empty($filters['code'])) {
             $query->where('code', '=', $filters['question']);
         }
         if (!empty($filters['name'])) {
-            $query->where('keywords', 'like', '%' . $filters['keyword'] . '%');
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filters['name']) . '%']);
         }
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
