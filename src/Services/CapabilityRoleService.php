@@ -2,11 +2,11 @@
 
 namespace LechugaNegra\AccessManager\Services;
 
-use LechugaNegra\AccessManager\Models\CapabilityRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Lechuganegra\AccessManager\Models\RelationEntityRole;
+use LechugaNegra\AccessManager\Models\CapabilityRole;
+use LechugaNegra\AccessManager\Models\RelationEntityRole;
 
 class CapabilityRoleService
 {

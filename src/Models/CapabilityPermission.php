@@ -1,9 +1,10 @@
 <?php
 
-namespace Lechuganegra\AccessManager\Models;
+namespace LechugaNegra\AccessManager\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use LechugaNegra\AccessManager\Scopes\VisiblePermissionScope;
 
 class CapabilityPermission extends Model
 {
@@ -25,11 +26,10 @@ class CapabilityPermission extends Model
         return $this->belongsTo(CapabilityModule::class, 'capability_module_id');
     }
 
-    // Relación con el modelo CapabilityRoute.
-    // public function route()
-    // {
-    //     return $this->belongsTo(CapabilityRoute::class, 'capability_route_id');
-    // }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new VisiblePermissionScope);
+    }
 
     // Relación con los roles que tienen este permiso.
     public function roles()

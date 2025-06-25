@@ -1,6 +1,6 @@
 <?php
 
-namespace Lechuganegra\AccessManager\Models;
+namespace LechugaNegra\AccessManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

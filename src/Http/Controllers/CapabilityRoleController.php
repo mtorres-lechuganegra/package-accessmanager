@@ -3,11 +3,11 @@
 namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use LechugaNegra\AccessManager\Http\Requests\StoreCapabilityRoleRequest;
-use LechugaNegra\AccessManager\Http\Requests\UpdateCapabilityRoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use LechugaNegra\AccessManager\Http\Requests\StoreCapabilityRoleRequest;
+use LechugaNegra\AccessManager\Http\Requests\UpdateCapabilityRoleRequest;
 use LechugaNegra\AccessManager\Http\Resources\CapabilityRoleShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityRoleService;
 

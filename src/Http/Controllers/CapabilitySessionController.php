@@ -4,7 +4,6 @@ namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use LechugaNegra\AccessManager\Http\Resources\CapabilitySessionResource;
 use LechugaNegra\AccessManager\Services\CapabilitySessionService;
 
 class CapabilitySessionController extends Controller

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name');
             $table->enum('type', ['access', 'action']); // Tipo de permiso
+            $table->boolean('hidden')->default(false);
             $table->timestamps();
         
             // Definimos las claves foráneas

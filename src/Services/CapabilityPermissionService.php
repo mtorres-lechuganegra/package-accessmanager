@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
-use Lechuganegra\AccessManager\Models\CapabilityRole;
-use Lechuganegra\AccessManager\Models\CapabilityRoute;
-use Lechuganegra\AccessManager\Models\RelationEntityRole;
+use LechugaNegra\AccessManager\Models\CapabilityRole;
+use LechugaNegra\AccessManager\Models\CapabilityRoute;
+use LechugaNegra\AccessManager\Models\RelationEntityRole;
+use LechugaNegra\AccessManager\Scopes\VisiblePermissionScope;
 
 class CapabilityPermissionService
 {
@@ -181,6 +182,7 @@ class CapabilityPermissionService
         $permissionCodes = CapabilityRoute::where('path', $routeName)
             ->first()
             ?->permissions()
+            ->withoutGlobalScope(VisiblePermissionScope::class)
             ->pluck('capability_permissions.code')
             ->toArray();
 

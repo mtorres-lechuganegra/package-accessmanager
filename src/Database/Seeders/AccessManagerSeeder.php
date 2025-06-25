@@ -56,6 +56,7 @@ class AccessManagerSeeder extends Seeder
                 [
                     'name' => $permissionData['name'],
                     'type' => strtolower($permissionData['type']),
+                    'hidden' => ! empty($permissionData['hidden']) ? true : false,
                     'capability_module_id' => $module->id,
                 ]
             );
