@@ -25,7 +25,7 @@ class CapabilityRoleService
 
         $this->filters($query, $filters);
 
-        return $query->paginate($size, ['*'], 'page', $page)->toArray();
+        return $query->paginate($size, ['*'], 'page', $page);
     }
 
     /**
