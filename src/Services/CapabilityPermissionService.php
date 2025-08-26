@@ -128,7 +128,7 @@ class CapabilityPermissionService
             });
         }
         if (!empty($filters['code'])) {
-            $query->where('code', '=', $filters['question']);
+            $query->where('code', '=', $filters['code']);
         }
         if (!empty($filters['name'])) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($filters['name']) . '%']);

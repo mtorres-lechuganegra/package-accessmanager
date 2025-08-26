@@ -9,7 +9,7 @@ class CapabilityPermissionShowResource extends JsonResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'route' => $this->route()->get()->toArray(),
+            'routes' => $this->routes()->get()->toArray(),
             'module' => $this->module()->get()->toArray(),
         ]);
     }

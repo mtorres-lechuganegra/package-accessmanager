@@ -17,7 +17,6 @@ class CapabilityPermission extends Model
         'name',
         'type',
         'capability_module_id',
-        'capability_route_id',
     ];
 
     // Relación con el modelo CapabilityModule.
