@@ -117,7 +117,7 @@ class AccessManagerSeeder extends Seeder
                             'api.access.capability.roles.show'
                         ]
                     ],
-                    'capability_roles_list' => [
+                    'capability_role_list' => [
                         'name' => 'Listar capacidad de roles',
                         'type' => 'access',
                         'routes' => [
