@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
-            $table->enum('type', ['access', 'action']); // Tipo de permiso
+            $table->enum('type', ['access', 'action', 'manage']); // Tipo de permiso
             $table->boolean('hidden')->default(false);
             $table->timestamps();
         
