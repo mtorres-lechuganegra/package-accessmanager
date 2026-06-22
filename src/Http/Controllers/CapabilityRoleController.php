@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +32,10 @@ class CapabilityRoleController extends Controller
         try {
             $registers = $this->capabilityRoleService->list($request->all());
             return response()->json($registers, 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -49,8 +52,10 @@ class CapabilityRoleController extends Controller
             return response()->json([
                 'data' => $registers
             ], 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -67,8 +72,10 @@ class CapabilityRoleController extends Controller
             return response()->json([
                 'data' => $registers
             ], 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -86,17 +93,19 @@ class CapabilityRoleController extends Controller
             if (!$user) {
                 return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
             }
-        
+
             $data = $request->validated();
             $data['created_by'] = $user->id;
-        
+
             $role = $this->capabilityRoleService->create($data);
 
             return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -115,8 +124,10 @@ class CapabilityRoleController extends Controller
             return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -134,8 +145,10 @@ class CapabilityRoleController extends Controller
             return (new CapabilityRoleShowResource($role))
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -150,8 +163,10 @@ class CapabilityRoleController extends Controller
         try {
             $this->capabilityRoleService->delete($id);
             return response()->json(['message' => 'Role deleted successfully'], 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionAllResource;
 use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionIndexResource;
@@ -31,8 +32,10 @@ class CapabilityPermissionController extends Controller
             return CapabilityPermissionIndexResource::collection($registers)
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -49,8 +52,10 @@ class CapabilityPermissionController extends Controller
             return CapabilityPermissionAllResource::collection($registers)
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -67,8 +72,10 @@ class CapabilityPermissionController extends Controller
             return response()->json([
                 'data' => $registers
             ], 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -86,8 +93,10 @@ class CapabilityPermissionController extends Controller
             return (new CapabilityPermissionShowResource($permission))
                 ->response()
                 ->setStatusCode(200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

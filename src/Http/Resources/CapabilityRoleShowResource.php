@@ -9,7 +9,15 @@ class CapabilityRoleShowResource extends JsonResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'permissions' => $this->permissions()->orderBy('name', 'asc')->get()->toArray(),
+            'permissions' => $this->permissions()
+                ->orderBy('name', 'asc')
+                ->get()
+                ->map(fn($p) => [
+                    'id'   => $p->id,
+                    'code' => $p->code,
+                    'name' => $p->name,
+                    'type' => $p->type,
+                ]),
         ]);
     }
 }

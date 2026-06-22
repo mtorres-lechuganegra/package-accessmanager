@@ -7,9 +7,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use LechugaNegra\AccessManager\Models\CapabilityRole;
 use LechugaNegra\AccessManager\Models\RelationEntityRole;
+use LechugaNegra\AccessManager\Services\CapabilityPermissionService;
+
 
 class CapabilityRoleService
 {
+    protected CapabilityPermissionService $permissionService;
+
+    public function __construct(CapabilityPermissionService $permissionService)
+    {
+        $this->permissionService = $permissionService;
+    }
+
     /**
      * Listar todos los roles con paginación.
      *
@@ -72,7 +81,7 @@ class CapabilityRoleService
     public function create(array $data)
     {
         DB::beginTransaction();
-    
+
         try {
             // Crear rol
             $role = CapabilityRole::create([
@@ -84,7 +93,7 @@ class CapabilityRoleService
 
             // Procesar permissions
             if (!empty($data['permissions'])) {
-                (new CapabilityPermissionService($this))->assigned($role, $data['permissions']);
+                $this->permissionService->assigned($role, $data['permissions']);
             }
 
             // Si todo es exitoso, confirmar la transacción
@@ -127,7 +136,7 @@ class CapabilityRoleService
 
             // Procesar permissions
             if (!empty($data['permissions'])) {
-                (new CapabilityPermissionService($this))->assigned($role, $data['permissions'], true);
+                $this->permissionService->assigned($role, $data['permissions'], true);
             }
 
             // Si todo es exitoso, confirmar la transacción
@@ -235,7 +244,7 @@ class CapabilityRoleService
                 ->where('entity_id', $entityId)
                 ->pluck('capability_role_id')
                 ->toArray();
-    
+
             // Determinar qué roles eliminar
             $toDelete = array_diff($existing, $roleIds);
             if (!empty($toDelete)) {
@@ -244,12 +253,12 @@ class CapabilityRoleService
                     ->whereIn('capability_role_id', $toDelete)
                     ->delete();
             }
-    
+
             // Determinar qué roles agregar
             $toInsert = array_diff($roleIds, $existing);
             if (!empty($toInsert)) {
                 $insert = [];
-    
+
                 foreach ($toInsert as $roleId) {
                     $insert[] = [
                         'entity_module' => $entityModule,
@@ -259,7 +268,7 @@ class CapabilityRoleService
                         'updated_at' => now(),
                     ];
                 }
-    
+
                 RelationEntityRole::insert($insert);
             }
         } else {

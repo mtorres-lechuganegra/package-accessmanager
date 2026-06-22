@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
             $table->softDeletes(); // Esto es para el softdelete (deleted_at)
-            
+
             // Definimos las claves foráneas
             $table->foreign('created_by')->references('id')->on('users');
         });

@@ -4,7 +4,6 @@ namespace LechugaNegra\AccessManager\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use LechugaNegra\AccessManager\Models\CapabilityPermission;
 use LechugaNegra\AccessManager\Models\CapabilityRole;
 use LechugaNegra\AccessManager\Models\CapabilityRoute;
@@ -23,7 +22,7 @@ class CapabilityPermissionService
     {
         $page = $filters['page'] ?? config('accessmanager.default_page');
         $size = $filters['size'] ?? config('accessmanager.default_size');
-        
+
         $query = CapabilityPermission::query();
 
         $this->filters($query, $filters);
@@ -61,17 +60,17 @@ class CapabilityPermissionService
 
         $query = CapabilityPermission::with('module:id,code,name')
             ->select('id', 'name', 'capability_module_id');
-    
+
         $this->filters($query, $filters);
 
         // Paginación aplicada ANTES de agrupar
         $output = $query->skip(0)->take($take)->get();
-    
+
         // Agrupar por módulo solo los permisos obtenidos
         if (!empty($filters['group'])) {
             return $output->groupBy('capability_module_id')->map(function ($group) {
                 $module = $group->first()->module;
-    
+
                 return [
                     'id' => $module->id,
                     'code' => $module->code,
@@ -137,8 +136,17 @@ class CapabilityPermissionService
             $query->where('type', $filters['type']);
         }
 
-        $orderField = $filters['order_field'] ?? 'updated_at';
-        $orderSort = $filters['order_sort'] ?? 'desc';
+        $allowedFields = ['id', 'name', 'code', 'type', 'created_at', 'updated_at'];
+        $allowedSorts  = ['asc', 'desc'];
+
+        $orderField = in_array($filters['order_field'] ?? '', $allowedFields)
+            ? $filters['order_field']
+            : 'updated_at';
+
+        $orderSort = in_array($filters['order_sort'] ?? '', $allowedSorts)
+            ? $filters['order_sort']
+            : 'desc';
+
         $query->orderBy($orderField, $orderSort);
     }
 
@@ -155,9 +163,9 @@ class CapabilityPermissionService
         if (empty($permissionIds)) {
             return;
         }
-    
+
         $permissionIds = array_map('intval', (array) $permissionIds);
-    
+
         if ($update) {
             // sincroniza (elimina los que no estén y agrega los nuevos)
             $role->permissions()->sync($permissionIds);
@@ -171,13 +179,11 @@ class CapabilityPermissionService
      * Verifica si el usuario autenticado tiene permiso para acceder a una ruta específica.
      *
      * @param string $routeName Nombre o path de la ruta.
+     * @param object $user Usuario autenticado.
      * @return bool True si el usuario tiene el permiso, false en caso contrario.
      */
-    public function hasPermissionForRoute(string $routeName): bool
+    public function hasPermissionForRoute(string $routeName, object $user): bool
     {
-        // Obtener el usuario autenticado
-        $user = Auth::user();
-
         // Obtener el permiso relacionado con la ruta solicitada
         $permissionCodes = CapabilityRoute::where('path', $routeName)
             ->first()
@@ -211,7 +217,8 @@ class CapabilityPermissionService
         if ($user->admin) {
             return CapabilityPermission::pluck('code')->toArray();
         } else {
-            return RelationEntityRole::where('entity_module', $entityModule)
+            return RelationEntityRole::with('role.permissions')
+                ->where('entity_module', $entityModule)
                 ->where('entity_id', $entityId)
                 ->get()
                 ->pluck('role.permissions')

@@ -16,11 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('capability_permission_id');
             $table->unsignedBigInteger('capability_route_id');
             $table->timestamps();
-    
+
             // Definimos las claves foráneas
             $table->foreign('capability_permission_id')->references('id')->on('capability_permissions')->onDelete('cascade');
             $table->foreign('capability_route_id')->references('id')->on('capability_routes')->onDelete('cascade');
-    
+
             // Aseguramos que las combinaciones de role_id y permission_id sean únicas, con un nombre corto para el índice
             $table->unique(['capability_permission_id', 'capability_route_id'], 'permission_route_unique');
         });

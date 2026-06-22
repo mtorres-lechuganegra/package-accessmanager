@@ -30,7 +30,7 @@ class CapabilityAccessMiddleware
         }
 
         $user = Auth::guard('api')->user();
-    
+
         // Si el usuario es admin (admin == 1), permitimos la acción sin verificar los permisos
         if ($user->admin == 1) {
             return $next($request);
@@ -39,7 +39,7 @@ class CapabilityAccessMiddleware
         $routeName = $request->route()->getName();
 
         // Verificar si el usuario tiene el permiso correspondiente para la ruta
-        if (!$this->permissionService->hasPermissionForRoute($routeName)) {
+        if (!$this->permissionService->hasPermissionForRoute($routeName, $user)) {
             return response()->json(['error' => 'You do not have permission for this action'], 403);
         }
 

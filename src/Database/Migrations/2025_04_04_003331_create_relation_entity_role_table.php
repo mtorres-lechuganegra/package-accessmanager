@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('entity_module', 100);     // Nombre del módulo de la entidad
             $table->unsignedBigInteger('capability_role_id');  // ID del rol
             $table->timestamps();
-            
+
             // Definimos las claves foráneas
             $table->foreign('capability_role_id')->references('id')->on('capability_roles')->onDelete('cascade');
 

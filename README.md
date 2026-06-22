@@ -124,7 +124,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     php artisan route:clear
     php artisan route:cache
     ```
-    
+
 10.  **Regenerar clases:**
 
     Regenerar las clases con el cargador automático "autoload"
@@ -177,7 +177,13 @@ public function roles()
 }
 ```
 
-Dirígete al archivo `AppServiceProvider.php`, y en tu boot de arranque, agregar la entidad que deseas vincular a la relación con roles, puedes agregar las entidades que desees, separado por `,`:
+Dirígete al archivo `AppServiceProvider.php`, y en tu boot de arranque, agregar la entidad que deseas vincular a la relación con roles, invocar la librería eloquent de relación:
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+```
+
+Agregar las entidades que desees, separado por `,`:
 
 ```php
 Relation::morphMap([

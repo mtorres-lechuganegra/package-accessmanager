@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['access', 'action']); // Tipo de permiso
             $table->boolean('hidden')->default(false);
             $table->timestamps();
-        
+
             // Definimos las claves foráneas
             $table->foreignId('capability_module_id')->constrained('capability_modules')->onDelete('cascade');
         });
