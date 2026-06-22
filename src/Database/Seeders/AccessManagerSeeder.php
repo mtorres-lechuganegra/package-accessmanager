@@ -3,10 +3,9 @@
 namespace LechugaNegra\AccessManager\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
-use Lechuganegra\AccessManager\Models\CapabilityModule;
-use Lechuganegra\AccessManager\Models\CapabilityPermission;
-use Lechuganegra\AccessManager\Models\CapabilityRoute;
+use LechugaNegra\AccessManager\Models\CapabilityModule;
+use LechugaNegra\AccessManager\Models\CapabilityPermission;
+use LechugaNegra\AccessManager\Models\CapabilityRoute;
 
 class AccessManagerSeeder extends Seeder
 {
@@ -118,7 +117,7 @@ class AccessManagerSeeder extends Seeder
                             'api.access.capability.roles.show'
                         ]
                     ],
-                    'capability_roles_list' => [
+                    'capability_role_list' => [
                         'name' => 'Listar capacidad de roles',
                         'type' => 'access',
                         'routes' => [
