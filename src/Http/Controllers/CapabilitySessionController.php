@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use LechugaNegra\AccessManager\Services\CapabilitySessionService;
 
@@ -26,8 +27,10 @@ class CapabilitySessionController extends Controller
         try {
             $registers = $this->capabilitySessionService->permissions($request->all());
             return response()->json($registers, 200);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
