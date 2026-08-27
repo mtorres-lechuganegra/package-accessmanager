@@ -5,8 +5,6 @@ namespace LechugaNegra\AccessManager\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionAllResource;
-use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionIndexResource;
 use LechugaNegra\AccessManager\Http\Resources\CapabilityPermissionShowResource;
 use LechugaNegra\AccessManager\Services\CapabilityPermissionService;
 
@@ -29,9 +27,7 @@ class CapabilityPermissionController extends Controller
     {
         try {
             $registers = $this->capabilityPermissionService->list($request->all());
-            return CapabilityPermissionIndexResource::collection($registers)
-                ->response()
-                ->setStatusCode(200);
+            return response()->json($registers, 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         } catch (\Exception $e) {
@@ -49,9 +45,9 @@ class CapabilityPermissionController extends Controller
     {
         try {
             $registers = $this->capabilityPermissionService->all($request->all());
-            return CapabilityPermissionAllResource::collection($registers)
-                ->response()
-                ->setStatusCode(200);
+            return response()->json([
+                'data' => $registers
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => $e->getMessage()], 404);
         } catch (\Exception $e) {

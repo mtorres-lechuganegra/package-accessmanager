@@ -216,21 +216,30 @@ class CapabilityRoleService
             $query->where('status', $filters['status']);
         }
 
-        $orderField = $filters['order_field'] ?? 'updated_at';
-        $orderSort = $filters['order_sort'] ?? 'desc';
+        $allowedFields = ['id', 'name', 'code', 'status', 'created_at', 'updated_at'];
+        $allowedSorts  = ['asc', 'desc'];
+
+        $orderField = in_array($filters['order_field'] ?? '', $allowedFields)
+            ? $filters['order_field']
+            : 'updated_at';
+
+        $orderSort = in_array($filters['order_sort'] ?? '', $allowedSorts)
+            ? $filters['order_sort']
+            : 'desc';
+
         $query->orderBy($orderField, $orderSort);
     }
 
     /**
      * Asignar uno o varios roles a una entidad (usuario, grupo, etc.).
      *
-     * @param string $entityModule Módulo o tipo de entidad.
+     * @param string $entityType Tipo de entidad.
      * @param string $entityId ID de la entidad.
      * @param array|int $roleIds IDs de los roles a asignar.
      * @param bool $update Si es true, sincroniza eliminando los roles antiguos.
      * @return void
      */
-    public function assigned(string $entityModule, string $entityId, $roleIds, bool $update = false): void
+    public function assigned(string $entityType, string $entityId, $roleIds, bool $update = false): void
     {
         if (empty($roleIds)) {
             return;
@@ -240,7 +249,7 @@ class CapabilityRoleService
 
         if ($update) {
             // Obtener roles actuales en DB
-            $existing = RelationEntityRole::where('entity_module', $entityModule)
+            $existing = RelationEntityRole::where('entity_type', $entityType)
                 ->where('entity_id', $entityId)
                 ->pluck('capability_role_id')
                 ->toArray();
@@ -248,7 +257,7 @@ class CapabilityRoleService
             // Determinar qué roles eliminar
             $toDelete = array_diff($existing, $roleIds);
             if (!empty($toDelete)) {
-                RelationEntityRole::where('entity_module', $entityModule)
+                RelationEntityRole::where('entity_type', $entityType)
                     ->where('entity_id', $entityId)
                     ->whereIn('capability_role_id', $toDelete)
                     ->delete();
@@ -261,7 +270,7 @@ class CapabilityRoleService
 
                 foreach ($toInsert as $roleId) {
                     $insert[] = [
-                        'entity_module' => $entityModule,
+                        'entity_type' => $entityType,
                         'entity_id' => $entityId,
                         'capability_role_id' => $roleId,
                         'created_at' => now(),
@@ -277,7 +286,7 @@ class CapabilityRoleService
 
             foreach ($roleIds as $roleId) {
                 $insert[] = [
-                    'entity_module' => $entityModule,
+                    'entity_type' => $entityType,
                     'entity_id' => $entityId,
                     'capability_role_id' => $roleId,
                     'created_at' => now(),

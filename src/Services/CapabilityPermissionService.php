@@ -58,8 +58,7 @@ class CapabilityPermissionService
     {
         $take = $filters['take'] ?? config('accessmanager.default_take');
 
-        $query = CapabilityPermission::with('module:id,code,name')
-            ->select('id', 'name', 'capability_module_id');
+        $query = CapabilityPermission::select('id', 'name', 'group');
 
         $this->filters($query, $filters);
 
@@ -67,14 +66,10 @@ class CapabilityPermissionService
         $output = $query->skip(0)->take($take)->get();
 
         // Agrupar por módulo solo los permisos obtenidos
-        if (!empty($filters['group'])) {
-            return $output->groupBy('capability_module_id')->map(function ($group) {
-                $module = $group->first()->module;
-
+        if (!empty($filters['with_grouped'])) {
+            return $output->groupBy('group')->map(function ($group, $groupKey) {
                 return [
-                    'id' => $module->id,
-                    'code' => $module->code,
-                    'name' => $module->name,
+                    'code' => $groupKey,
                     'permissions' => $group->map(fn($permission) => [
                         'id' => $permission->id,
                         'name' => $permission->name,
@@ -135,8 +130,11 @@ class CapabilityPermissionService
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
         }
+        if (!empty($filters['group'])) {
+            $query->where('group', '=', $filters['group']);
+        }
 
-        $allowedFields = ['id', 'name', 'code', 'type', 'created_at', 'updated_at'];
+        $allowedFields = ['id', 'name', 'code', 'type', 'group', 'created_at', 'updated_at'];
         $allowedSorts  = ['asc', 'desc'];
 
         $orderField = in_array($filters['order_field'] ?? '', $allowedFields)
@@ -193,10 +191,10 @@ class CapabilityPermissionService
             ->toArray();
 
         if (empty($permissionCodes)) {
-            return true;
+            return !config('accessmanager.strict_routes', true);
         }
 
-        return RelationEntityRole::where('entity_module', config('accessmanager.user_entity.table'))
+        return RelationEntityRole::where('entity_type', config('accessmanager.user_entity.table'))
             ->where('entity_id', $user->id)
             ->whereHas('role.permissions', function ($query) use ($permissionCodes) {
                 $query->whereIn('capability_permissions.code', $permissionCodes);
@@ -208,17 +206,17 @@ class CapabilityPermissionService
      * Obtiene los códigos únicos de permisos asignados a una entidad según sus roles.
      *
      * @param object $user Objeto del usuario
-     * @param string $entityModule Nombre del módulo (ej: 'users', 'admins', etc.)
+     * @param string $entityType Nombre de la entidad (ej: 'users', 'admins', etc.)
      * @param int $entityId ID de la entidad (usuario u otra)
      * @return array Lista de códigos de permisos (sin repetidos)
      */
-    public function getPermissionsByEntity(object $user, string $entityModule, int $entityId): array
+    public function getPermissionsByEntity(object $user, string $entityType, int $entityId): array
     {
         if ($user->admin) {
             return CapabilityPermission::pluck('code')->toArray();
         } else {
             return RelationEntityRole::with('role.permissions')
-                ->where('entity_module', $entityModule)
+                ->where('entity_type', $entityType)
                 ->where('entity_id', $entityId)
                 ->get()
                 ->pluck('role.permissions')

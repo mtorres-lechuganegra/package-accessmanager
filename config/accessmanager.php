@@ -25,8 +25,8 @@ return [
     |
     */
     'user_entity' => [
-        'model' => App\Models\User::class,
-        'table' => 'users'
+        'model' => env('ACCESS_MANAGER_USER_MODEL', 'App\Models\User'),
+        'table' => env('ACCESS_MANAGER_USER_TABLE', 'users'),
     ],
 
     /*
@@ -34,8 +34,18 @@ return [
     | Sync
     |--------------------------------------------------------------------------
     |
-    | Sincronización de en cascada de módulos, permisos y rutas para la gestión de roles.
+    | Sincronización en cascada de módulos, permisos y rutas para la gestión de roles.
     |
     */
     'strict_sync' => env('ACCESS_MANAGER_STRICT_SYNC', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes
+    |--------------------------------------------------------------------------
+    |
+    | Restricción de acceso por ruta no registrada.
+    |
+    */
+    'strict_routes' => env('ACCESS_MANAGER_STRICT_ROUTES', true),
 ];

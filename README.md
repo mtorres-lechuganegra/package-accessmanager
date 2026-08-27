@@ -1,16 +1,16 @@
 # Lechuga Negra - AccessManager para Laravel
 
-Este paquete de Laravel proporciona una solución integral para la gestión de accesos en tus aplicaciones, permitiendo la definición de roles, módulos, permisos y rutas, con una lógica de relaciones muchos a muchos entre roles y permisos. Además, incluye un middleware para la validación de permisos en rutas, asegurando un control de acceso robusto y flexible.
+Este paquete de Laravel proporciona una solución integral para la gestión de accesos en tus aplicaciones, permitiendo la definición de roles, permisos agrupados y rutas, con una lógica de relaciones muchos a muchos entre roles y permisos. Además, incluye un middleware para la validación de permisos en rutas, asegurando un control de acceso robusto y flexible.
 
 ## Características Principales
 
 * **Gestión de Roles:** Define roles con distintos niveles de acceso, permitiendo una administración granular de privilegios.
-* **Banco de Módulos:** Organiza los permisos en módulos lógicos, facilitando la administración y comprensión de los mismos.
-* **Banco de Permisos:** Asigna permisos específicos a roles, controlando las acciones que cada rol puede realizar.
-* **Banco de Rutas:** Asocia permisos a rutas concretas, protegiendo el acceso a funcionalidades específicas de la aplicación.
+* **Banco de Permisos:** Asigna permisos específicos a roles, agrupados por contexto para facilitar su administración.
+* **Asociación de Rutas:** Vincula permisos a rutas de forma opcional. Si una ruta no está registrada, el comportamiento depende de la variable `ACCESS_MANAGER_STRICT_ROUTES`.
 * **Middleware de Validación:** Valida los permisos de las rutas mediante un middleware, asegurando que solo los usuarios autorizados puedan acceder a ellas.
-* **Arrancador de Capacidades:** Archivo de configuración que permite el registro de modulos, permisos y rutas.
+* **Arrancador de Capacidades:** Archivo de configuración que permite el registro de permisos agrupados y rutas.
 * **Personalización del Modelo de Usuario:** Permite utilizar un modelo de usuario personalizado, adaptándose a las necesidades de cada proyecto.
+* **Log de Auditoría:** Registra automáticamente las acciones de creación, actualización y eliminación de roles en `capability_logs`, incluyendo el usuario que ejecutó la acción, IP, user agent y snapshot de datos.
 
 ## Instalación
 
@@ -80,9 +80,9 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
     ```bash
     php artisan vendor:publish --tag=accessmanager-config
-    
+
     ```
-    
+
     Esto te permitirá personalizar el comportamiento del paquete desde tu proyecto.
 
 6.  **Configurar el modelo de usuario (opcional):**
@@ -139,14 +139,37 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 
 Puede importar el archivo `postman_collection.json` que se ubica en la carpeta `docs` de la raíz del paquete.
 
-### Variable de Sincronización
+### Variables de Entorno
 
-Puede determinar el comportamiento de la sincronización de módulos, permisos y rutas activando la siguiente variable de entorno
+Puede determinar el comportamiento del paquete mediante las siguientes variables de entorno:
 
-```nginx
+**Modelo de usuario**
+
+```env
+ACCESS_MANAGER_USER_MODEL=App\Models\User
+ACCESS_MANAGER_USER_TABLE=users
+```
+
+- `ACCESS_MANAGER_USER_MODEL`: Clase del modelo de usuario de tu proyecto.
+- `ACCESS_MANAGER_USER_TABLE`: Nombre de la tabla de usuarios en la base de datos.
+
+**Sincronización de permisos y rutas**
+
+```env
 ACCESS_MANAGER_STRICT_SYNC=false
 ```
-Esto permite hacer una sincronización completa o parcial.
+
+- `false` (default): Sincronización aditiva — agrega nuevos permisos y rutas sin eliminar los existentes.
+- `true`: Sincronización estricta — elimina los permisos y rutas que ya no estén definidos en la configuración.
+
+**Restricción de acceso por ruta**
+
+```env
+ACCESS_MANAGER_STRICT_ROUTES=true
+```
+
+- `true` (default): Bloquea con 403 si la ruta no está registrada en `capability_routes`. Recomendado para producción.
+- `false`: Permite el acceso si la ruta no está registrada. Útil durante desarrollo.
 
 ### Middleware de Validación
 
@@ -173,7 +196,7 @@ Agregar la función de relación através del puente de conexión:
 ```php
 public function roles()
 {
-    return $this->morphMany(RelationEntityRole::class, 'entity', 'entity_module', 'entity_id');
+    return $this->morphMany(RelationEntityRole::class, 'entity', 'entity_type', 'entity_id');
 }
 ```
 
@@ -190,3 +213,17 @@ Relation::morphMap([
     'user' => \App\Models\User::class,
 ]);
 ```
+
+### Diagnóstico del Sistema
+
+El paquete incluye un comando artisan para verificar el estado de permisos y rutas registradas:
+
+```bash
+php artisan accessmanager:check
+```
+
+Este comando realiza tres verificaciones:
+
+- **Permisos sin rutas asociadas:** Lista los permisos que no tienen ninguna ruta vinculada.
+- **Rutas sin permisos asociados:** Lista las rutas registradas en BD que no tienen ningún permiso vinculado.
+- **Rutas huérfanas:** Lista las rutas registradas en BD que ya no existen en Laravel.

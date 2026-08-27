@@ -3,6 +3,7 @@
 namespace LechugaNegra\AccessManager\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use LechugaNegra\AccessManager\Console\Commands\AccessManagerCheck;
 use LechugaNegra\AccessManager\Middleware\CapabilityAccessMiddleware;
 
 class AccessManagerProvider extends ServiceProvider
@@ -41,9 +42,16 @@ class AccessManagerProvider extends ServiceProvider
         ], 'accessmanager-config');
 
         // Registrar el middleware en el Kernel de la aplicación
-        $this->app['router']->aliasMiddleware('capability.access', CapabilityAccessMiddleware::class);
+        $this->app->make('router')->aliasMiddleware('capability.access', CapabilityAccessMiddleware::class);
 
         // Cargar rutas de api.php
         $this->loadRoutesFrom(__DIR__.'/../Routes/api.php');
+
+        // Registrar comandos artisan
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                AccessManagerCheck::class,
+            ]);
+        }
     }
 }

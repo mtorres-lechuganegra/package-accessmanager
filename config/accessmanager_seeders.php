@@ -6,9 +6,9 @@ return [
     | Access
     |--------------------------------------------------------------------------
     |
-    | Cascada de módulos, permisos y rutas para la gestión de roles.
+    | Cascada de grupos, permisos y rutas para la gestión de roles.
     |
     */
-    'modules' => [
+    'groups' => [
     ]
 ];

@@ -15,15 +15,6 @@ class CapabilityPermissionShowResource extends JsonResource
                     'id' => $p->id,
                     'path' => $p->path,
                 ]),
-            'module' => $this->module()
-                ->get()
-                ->map(fn($p) => [
-                    'id' => $p->id,
-                    'parent_id' => $p->parent_id,
-                    'code' => $p->code,
-                    'name' => $p->name,
-                ]),
         ]);
     }
 }
-
