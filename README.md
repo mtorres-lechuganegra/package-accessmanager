@@ -82,7 +82,6 @@ erDiagram
     capability_permissions ||--o{ relation_permission_route : "vinculado a"
     capability_routes ||--o{ relation_permission_route : "vinculado a"
     capability_roles ||--o{ relation_entity_role : "asignado a"
-    capability_roles ||--o{ capability_logs : "auditado en"
 ```
 
 ## Instalación
