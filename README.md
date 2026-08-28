@@ -24,7 +24,7 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
     ```
 
     Crear el grupo de carpetas dentro de la carpeta creada, e ingresar a l carpeta:
-    
+
     ```bash
     mkdir lechuganegra
     cd lechuganegra
@@ -227,3 +227,26 @@ Este comando realiza tres verificaciones:
 - **Permisos sin rutas asociadas:** Lista los permisos que no tienen ninguna ruta vinculada.
 - **Rutas sin permisos asociados:** Lista las rutas registradas en BD que no tienen ningún permiso vinculado.
 - **Rutas huérfanas:** Lista las rutas registradas en BD que ya no existen en Laravel.
+
+## Upgrade Guide
+
+### v1.x → v2.0.0
+
+**Cambios breaking:**
+
+- `capability_modules` eliminada — los permisos ahora se agrupan con la columna `group` en `capability_permissions`
+- `entity_module` renombrado a `entity_type` en `relation_entity_role`
+- `created_by` en `capability_roles` ya no tiene FK a `users`
+- Config `accessmanager_seeders.modules` renombrado a `accessmanager_seeders.groups`
+- Ruta `session/permissions` movida fuera del middleware `capability.access`
+
+**Pasos para migrar:**
+
+1. Actualiza el paquete a v2.0.0
+2. Ejecuta las migraciones — migrarán los datos automáticamente:
+```bash
+php artisan migrate --path=packages/lechuganegra/accessmanager/src/Database/Migrations
+```
+3. Actualiza tu `accessmanager_seeders.php` — renombra la clave `modules` por `groups` y elimina el campo `name` del grupo
+4. Si usas `entity_module` en tu código para asignar roles, cámbialo a `entity_type`
+5. Si tienes la ruta `session/permissions` dentro de un grupo `capability.access`, sácala y déjala solo con `auth:api`

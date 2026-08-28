@@ -1,16 +1,25 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
+        // Migrar datos: copiar code de capability_modules a group en capability_permissions
+        DB::statement('
+            UPDATE capability_permissions cp
+            JOIN capability_modules cm ON cm.id = cp.capability_module_id
+            SET cp.group = cm.code
+            WHERE cp.capability_module_id IS NOT NULL
+        ');
+
         Schema::table('capability_permissions', function ($table) {
-            if (Schema::hasColumn('capability_permissions', 'module_id')) {
-                $table->dropForeign(['module_id']);
-                $table->dropColumn('module_id');
+            if (Schema::hasColumn('capability_permissions', 'capability_module_id')) {
+                $table->dropForeign(['capability_module_id']);
+                $table->dropColumn('capability_module_id');
             }
         });
 
@@ -28,8 +37,8 @@ return new class extends Migration
         });
 
         Schema::table('capability_permissions', function ($table) {
-            $table->unsignedBigInteger('module_id')->nullable()->after('id');
-            $table->foreign('module_id')->references('id')->on('capability_modules')->onDelete('set null');
+            $table->unsignedBigInteger('capability_module_id')->nullable()->after('id');
+            $table->foreign('capability_module_id')->references('id')->on('capability_modules')->onDelete('set null');
         });
     }
 };
