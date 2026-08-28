@@ -12,6 +12,79 @@ Este paquete de Laravel proporciona una solución integral para la gestión de a
 * **Personalización del Modelo de Usuario:** Permite utilizar un modelo de usuario personalizado, adaptándose a las necesidades de cada proyecto.
 * **Log de Auditoría:** Registra automáticamente las acciones de creación, actualización y eliminación de roles en `capability_logs`, incluyendo el usuario que ejecutó la acción, IP, user agent y snapshot de datos.
 
+## Estructura de Base de Datos
+
+```mermaid
+erDiagram
+    capability_roles {
+        bigint id PK
+        string name
+        string code
+        enum status
+        bigint created_by
+        timestamp created_at
+        timestamp updated_at
+        timestamp deleted_at
+    }
+    capability_permissions {
+        bigint id PK
+        string group
+        string code
+        string name
+        enum type
+        boolean hidden
+        timestamp created_at
+        timestamp updated_at
+    }
+    capability_routes {
+        bigint id PK
+        string name
+        string path
+        timestamp created_at
+        timestamp updated_at
+    }
+    relation_role_permission {
+        bigint id PK
+        bigint capability_role_id FK
+        bigint capability_permission_id FK
+    }
+    relation_permission_route {
+        bigint id PK
+        bigint capability_permission_id FK
+        bigint capability_route_id FK
+    }
+    relation_entity_role {
+        bigint id PK
+        string entity_type
+        bigint entity_id
+        bigint capability_role_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    capability_logs {
+        bigint id PK
+        bigint data_id
+        string data_code
+        string data_name
+        string data_type
+        timestamp data_date
+        string data_status
+        string action
+        bigint user_id
+        json log_data
+        string ip_address
+        string user_agent
+        timestamp created_at
+    }
+
+    capability_roles ||--o{ relation_role_permission : "tiene"
+    capability_permissions ||--o{ relation_role_permission : "asignado a"
+    capability_permissions ||--o{ relation_permission_route : "vinculado a"
+    capability_routes ||--o{ relation_permission_route : "vinculado a"
+    capability_roles ||--o{ relation_entity_role : "asignado a"
+    capability_roles ||--o{ capability_logs : "auditado en"
+```
+
 ## Instalación
 
 1.  **Crear grupo de paquetes:**
